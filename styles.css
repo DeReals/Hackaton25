@@ -1,4 +1,3 @@
-/* General styling */
 * {
   margin: 0;
   padding: 0;
@@ -7,33 +6,30 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: rgb(40, 40, 40); /* Set background color */
+  background-color: rgb(40, 40, 40);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  color: white; /* Text color for visibility */
+  color: white;
 }
 
-/* Styling for the question container */
 #question-container {
   padding: 3rem;
   text-align: center;
-  width: 80vw; /* Changed to 80% of viewport width for responsiveness */
-  max-width: 400px; /* Maximum width to avoid it becoming too wide on larger screens */
-  min-height: 400px; /* Increased height */
+  width: 80vw;
+  max-width: 400px;
+  min-height: 400px;
   margin: auto;
 }
 
-/* Styling for the options (making it vertical and full-width) */
 #question-options {
   display: flex;
-  flex-direction: column; /* Align options vertically */
-  gap: 1rem; /* Space between the options */
+  flex-direction: column;
+  gap: 1rem;
   margin-top: 1rem;
 }
 
-/* Styling for buttons (acting like checkboxes) */
 .option-button {
   padding: 1rem;
   border: 1px solid white;
@@ -41,15 +37,14 @@ body {
   font-size: 1.2rem;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-color: rgb(40, 40, 40); /* Set background color for the options */
-  color: white; /* Text color for visibility */
+  background-color: rgb(40, 40, 40);
+  color: white;
   display: flex;
-  justify-content: center; /* Center text horizontally */
-  align-items: center; /* Center text vertically */
-  outline: none; /* Removes default outline */
+  justify-content: center;
+  align-items: center;
+  outline: none;
 }
 
-/* Hover effect */
 .option-button:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 10px rgba(255, 255, 255, 1);
@@ -57,20 +52,18 @@ body {
 }
 
 .option-button.selected {
-  background-color: #007bff; /* Blue when selected */
-  color: white; /* Text stays white */
+  background-color: rgb(0, 123, 255);
+  color: white;
 }
 
-/* Ok button container to left align the Ok button */
 .ok-button-container {
   display: flex;
-  justify-content: flex-start; /* Align the Ok button to the left */
-  margin-top: 1rem; /* Space above the Ok button */
+  justify-content: flex-start;
+  margin-top: 1rem;
 }
 
-/* Ok button styling */
 .ok-button {
-  background-color: green; /* Green background for the Ok button */
+  background-color: green;
   width: 20%;
   padding: 1rem;
   font-size: 1.2rem;
@@ -79,11 +72,10 @@ body {
   color: white;
   border: 1px solid #333;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin: 1rem 0 0 0; /* Added margin to the top of the Ok button */
+  margin: 1rem 0 0 0;
 }
 
-/* Ok button hover effect */
 .ok-button:hover {
-  box-shadow: 0 4px 10px rgba(0, 128, 0, 1); /* Shadow color matches the green */
-  background-color: rgb(0, 150, 0); /* Slightly brighter green */
+  box-shadow: 0 4px 10px rgba(0, 128, 0, 1);
+  background-color: rgb(0, 150, 0);
 }

@@ -1,22 +1,28 @@
 // Array to hold multiple questions
 const questions = [
   {
-    question: "What is your favorite programming language?",
-    options: ["JavaScript", "Python", "Ruby", "Java", "C++"],
+    question: "What is your gender?",
+    options: ["Male", "Female"],
     showOkButton: false,
   },
   {
-    question: "What is your preferred IDE?",
-    options: ["VSCode", "Sublime Text", "IntelliJ", "Atom"],
-    showOkButton: true,
+    question: "What is your experience level?",
+    options: ["Beginner", "Novice", "Intermediate", "Advanced", "Elite"],
+    showOkButton: false,
   },
   {
-    question: "What do you enjoy most about coding?",
+    question: "What muscle groupds do you want to focus on?",
     options: [
-      "Problem-solving",
-      "Building things",
-      "Learning new concepts",
-      "Debugging",
+      "Chest",
+      "Back",
+      "Shoulders",
+      "Quads",
+      "Hamstrings",
+      "Calves",
+      "Biceps",
+      "Triceps",
+      "Forearms",
+      "Abs",
     ],
     showOkButton: true,
   },

@@ -1,56 +1,166 @@
 * {
-    border: 0;
-    margin: 0;
-    box-sizing: border-box;
+  border: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: gray;
-    font-family: calibri;
-}
-
-header {
-    background-color: black;
-    padding: 1rem;
-    border-bottom: 0.125rem solid #333;
+  background-color: gray;
+  font-family: calibri;
+  color: white;
 }
 
 a {
-    text-decoration: none;
-    color: white
+  text-decoration: none;
+  color: white;
 }
 
-.container {
-    margin: 0 1rem;
-    display: flex;               
-    align-items: center;  
-    justify-content: space-between;    
+a:hover {
+  color: #facc15; /* gold/yellow */
+  text-shadow: 0 0 5px #facc15;
+  transition: 0.3s ease;
 }
 
-.otherheaders {
-    margin: 0 auto;
-    display: flex;
-    flex-basis: 50%;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 1.5rem;
-    font-weight: 400;
+input {
+  padding: 0.75rem 1rem;
+  border: 2px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: white;
+  outline: none;
 }
 
-#mainheader {
-    display: flex;
-    flex-basis: 25%;
-    align-items: center;
-    justify-content: left;
-    font-size: 2rem;
-    font-weight: 900;
+.full-width {
+  width: 100%;
 }
 
-#shoppingcart {
-    display: flex;
-    flex-basis: 25%;
-    justify-content: right;
-    height: 2rem;
-    width: 2rem;
-    object-fit: cover;
+.header-container {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  background-color: rgb(40, 40, 40);
+  height: 50px;
+}
+
+.header-left,
+.header-center,
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-left {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.header-center {
+  flex: 2;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.header-right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+#main-header {
+  font-size: 2rem;
+  font-weight: 900;
+  color: white;
+}
+
+.header-center a {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: white;
+}
+
+.header-center a:hover {
+  color: #facc15;
+  text-shadow: 0 0 5px #facc15;
+  transition: 0.3s ease;
+}
+
+.settings-icon {
+  width: 30px;
+  height: 30px;
+}
+
+#main-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.exercise-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px 0;
+  background-color: rgb(40, 40, 40);
+  min-width: 750px;
+  max-width: 1000px;
+  border: 1px solid black;
+  border-radius: 1rem;
+}
+
+.exercise-card:first-child {
+  margin-top: 20px;
+}
+
+.exercise-card:last-child {
+  margin-bottom: 20px;
+}
+
+.exercise-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+
+.exercise-card-header > div {
+  flex: 1;
+  text-align: center;
+}
+
+.exercise-name {
+  text-align: left;
+}
+
+.exercise-rest {
+  text-align: right;
+}
+
+.exercise-card-sub-header {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.exercise-card-sub-header h3 {
+  width: 48%;
+  text-align: center;
+}
+
+.exercise-card-splits {
+  width: 90%;
+}
+
+.exercise-card-individual-split {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.exercise-card-individual-split input {
+  width: 48%; /* align with headers */
 }

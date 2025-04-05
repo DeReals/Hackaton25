@@ -11,7 +11,7 @@ const questions = [
     showOkButton: false,
   },
   {
-    question: "What muscle groupds do you want to focus on?",
+    question: "What muscle groups do you want to focus on?",
     options: [
       "Chest",
       "Back",
@@ -28,7 +28,32 @@ const questions = [
   },
 ];
 
+// Load the saved state from localStorage
+function loadState() {
+  const savedAnswers = localStorage.getItem("userAnswers");
+  const savedIndex = localStorage.getItem("currentQuestionIndex");
+
+  if (savedAnswers) {
+    userAnswers = JSON.parse(savedAnswers);
+  } else {
+    userAnswers = {};
+  }
+
+  if (savedIndex !== null) {
+    currentQuestionIndex = parseInt(savedIndex);
+  } else {
+    currentQuestionIndex = 0;
+  }
+}
+
+// Save the current state to localStorage
+function saveState() {
+  localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+  localStorage.setItem("currentQuestionIndex", currentQuestionIndex);
+}
+
 let currentQuestionIndex = 0;
+let userAnswers = {};
 
 // Function to load the current question and options dynamically
 function loadQuestion() {
@@ -46,11 +71,16 @@ function loadQuestion() {
   optionsElement.innerHTML = "";
 
   // Loop through the options and create a button for each
-  currentQuestion.options.forEach((option) => {
+  currentQuestion.options.forEach((option, index) => {
     const optionButton = document.createElement("button");
     optionButton.innerText = option;
     optionButton.classList.add("option-button");
-    optionButton.addEventListener("click", () => handleOptionClick(option));
+
+    // Pass the optionButton itself, not just the option text
+    optionButton.addEventListener("click", () =>
+      handleOptionClick(optionButton)
+    );
+
     optionsElement.appendChild(optionButton);
   });
 
@@ -63,36 +93,73 @@ function loadQuestion() {
   }
 }
 
-// Handle when an option is clicked
-function handleOptionClick(option) {
-  console.log("You selected: " + option);
-  // After an answer is selected, move to the next question with a swipe animation
-  moveToNextQuestion();
+// Handle when an option button is clicked
+function handleOptionClick(optionButton) {
+  console.log("Button clicked:", optionButton.innerText);
+
+  // Toggle the 'selected' class to change button appearance
+  optionButton.classList.toggle("selected");
+
+  // Save the answer to the userAnswers object
+  const currentQuestion = questions[currentQuestionIndex];
+  userAnswers[currentQuestion.question] = optionButton.innerText;
+
+  // Save the state after an option is selected
+  saveState();
+
+  // If no Ok button is required, move to the next question
+  if (!currentQuestion.showOkButton) {
+    moveToNextQuestion();
+  }
 }
 
-// Handle when the Ok button is clicked
 function handleOkClick() {
   console.log("Ok button clicked!");
-  // After Ok button is clicked, move to the next question with a swipe animation
+  const currentQuestion = questions[currentQuestionIndex];
+
+  if (currentQuestion.showOkButton) {
+    // Get all the selected options for muscle groups
+    const selectedOptions = [];
+    const selectedButtons = document.querySelectorAll(
+      ".option-button.selected"
+    ); // Get all selected buttons
+
+    selectedButtons.forEach((button) => {
+      selectedOptions.push(button.innerText); // Push the text of the selected button
+    });
+
+    // Save the selected options to the userAnswers object
+    userAnswers[currentQuestion.question] = selectedOptions;
+
+    console.log("You selected: " + selectedOptions.join(", "));
+  }
+
+  // Save the state after Ok button is clicked
+  saveState();
+
+  // After Ok button is clicked, move to the next question
   moveToNextQuestion();
 }
 
-// Function to move to the next question with animation
+// Function to move to the next question
 function moveToNextQuestion() {
-  const questionContainer = document.getElementById("question-container");
+  // Increment question index
+  currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
 
-  // Add swipe-left animation
-  questionContainer.classList.add("swipe-left");
-
-  // Wait for the animation to finish before updating the question
-  setTimeout(() => {
-    currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+  // If all questions have been answered, redirect to workout.html
+  if (currentQuestionIndex === 0) {
+    console.log("All questions answered. Saving results:", userAnswers);
+    window.location.href = "workout.html"; // Redirect to workout.html after all questions are answered
+  } else {
     loadQuestion();
+  }
 
-    // Remove the animation class after it finishes
-    questionContainer.classList.remove("swipe-left");
-  }, 500); // Matches the duration of the animation
+  // Save the state after moving to the next question
+  saveState();
 }
 
-// Call loadQuestion function when the page loads
-window.onload = loadQuestion;
+// Call loadState function to load saved data, then load the first question
+window.onload = () => {
+  loadState();
+  loadQuestion();
+};

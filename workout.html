@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="workout.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="header-container">
+        <div class="header-left">
+          <a href="#" class="site-title">Gym Workout</a>
+        </div>
+
+        <div class="header-center">
+          <a href="workouts.html">Workouts</a>
+          <a href="build.html">Build</a>
+          <a href="history.html">History</a>
+        </div>
+
+        <div class="header-right">
+          <a href="#"
+            ><img
+              src="images/settings.png"
+              alt="Settings"
+              class="settings-icon"
+          /></a>
+        </div>
+      </nav>
+    </header>
+
+    <div id="main-body" class="full-width">
+      <div class="exercise-card">
+        <div class="exercise-card-header full-width">
+          <div class="exercise-name"><h2>Dumbbell Press</h2></div>
+          <div class="exercise-sets"><h3>3x10</h3></div>
+          <div class="exercise-rest"><h3>3 min rest</h3></div>
+        </div>
+        <div class="exercise-card-sub-header full-width">
+          <h3>Reps</h3>
+          <h3>Weight (lbs)</h3>
+        </div>
+        <div class="exercise-card-splits">
+          <div class="exercise-card-individual-split">
+            <input type="number" placeholder="3" min="0" />
+            <input type="number" placeholder="100" min="0" step="5" />
+          </div>
+          <div class="exercise-card-individual-split">
+            <input type="number" placeholder="3" min="0" />
+            <input type="number" placeholder="100" min="0" step="5" />
+          </div>
+          <div class="exercise-card-individual-split">
+            <input type="number" placeholder="3" min="0" />
+            <input type="number" placeholder="100" min="0" step="5" />
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise-card">
+        <div class="exercise-card-header full-width">
+          <div class="exercise-name"><h2>Biceps Curls</h2></div>
+          <div class="exercise-sets"><h3>3x10</h3></div>
+          <div class="exercise-rest"><h3>2 min rest</h3></div>
+        </div>
+        <div class="exercise-card-sub-header full-width">
+          <h3>Reps</h3>
+          <h3>Weight (lbs)</h3>
+        </div>
+        <div class="exercise-card-splits">
+          <div class="exercise-card-individual-split">
+            <input type="number" placeholder="3" min="0" />
+            <input type="number" placeholder="100" min="0" step="5" />
+          </div>
+          <div class="exercise-card-individual-split">
+            <input type="number" placeholder="3" min="0" />
+            <input type="number" placeholder="100" min="0" step="5" />
+          </div>
+          <div class="exercise-card-individual-split">
+            <input type="number" placeholder="3" min="0" />
+            <input type="number" placeholder="100" min="0" step="5" />
+          </div>
+        </div>
+      </div>
+      <script src="index2.js"></script>
+      <input
+        class="done-button"
+        type="submit"
+        value="NEXT >"
+        onclick="doneHistory()"
+      />
+    </div>
+  </body>
+</html>

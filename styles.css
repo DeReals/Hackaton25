@@ -164,3 +164,9 @@ input {
 .exercise-card-individual-split input {
   width: 48%; /* align with headers */
 }
+
+.done-button{
+  padding: auto;
+  
+
+}

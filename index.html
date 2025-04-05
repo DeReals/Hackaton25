@@ -34,8 +34,8 @@
       <div class="exercise-card">
         <div class="exercise-card-header full-width">
           <div class="exercise-name"><h2>Dumbbell Press</h2></div>
-          <div class="exercise-sets"><p>3x10</p></div>
-          <div class="exercise-rest"><p>1 min rest</p></div>
+          <div class="exercise-sets"><h3>3x10</h3></div>
+          <div class="exercise-rest"><h3>3 min rest</h3></div>
         </div>
         <div class="exercise-card-sub-header full-width">
           <h3>Reps</h3>
@@ -43,25 +43,25 @@
         </div>
         <div class="exercise-card-splits">
           <div class="exercise-card-individual-split">
-            <input type="text" placeholder="10" />
-            <input type="text" placeholder="100" />
+            <input type="number" placeholder="3" min="0" >
+            <input type="number" placeholder="100" min="0" step="5"/>
           </div>
           <div class="exercise-card-individual-split">
-            <input type="text" placeholder="10" />
-            <input type="text" placeholder="100" />
+            <input type="number" placeholder="3" min="0" />
+            <input type="number" placeholder="100" min="0" step="5"/>
           </div>
           <div class="exercise-card-individual-split">
-            <input type="text" placeholder="10" />
-            <input type="text" placeholder="100" />
+            <input type="number" placeholder="3" min="0" />
+            <input type="number" placeholder="100" min="0" step="5"/>
           </div>
         </div>
       </div>
 
       <div class="exercise-card">
         <div class="exercise-card-header full-width">
-          <div class="exercise-name"><h2>Dumbbell Press</h2></div>
-          <div class="exercise-sets"><p>3x10</p></div>
-          <div class="exercise-rest"><p>1 min rest</p></div>
+          <div class="exercise-name"><h2>Biceps Curls</h2></div>
+          <div class="exercise-sets"><h3>3x10</h3></div>
+          <div class="exercise-rest"><h3>2 min rest</h3></div>
         </div>
         <div class="exercise-card-sub-header full-width">
           <h3>Reps</h3>
@@ -69,19 +69,22 @@
         </div>
         <div class="exercise-card-splits">
           <div class="exercise-card-individual-split">
-            <input type="text" placeholder="10" />
-            <input type="text" placeholder="100" />
+            <input type="number" placeholder="3"  min="0"/> 
+            <input type="number" placeholder="100" min="0" step="5"/>
           </div>
           <div class="exercise-card-individual-split">
-            <input type="text" placeholder="10" />
-            <input type="text" placeholder="100" />
+            <input type="number" placeholder="3" min="0" />
+            <input type="number" placeholder="100" min="0" step="5"/>
           </div>
           <div class="exercise-card-individual-split">
-            <input type="text" placeholder="10" />
-            <input type="text" placeholder="100" />
+            <input type="number" placeholder="3" min="0" />
+            <input type="number" placeholder="100" min="0" step="5">
           </div>
-        </div>
+        </div> 
       </div>
+      <script src="index2.js"></script> 
+      <input class="done-button" type="submit" value="NEXT >" onclick="doneHistory()">
     </div>
+    
   </body>
 </html>

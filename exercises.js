@@ -238,3 +238,115 @@ const abExercises = [
   { name: "Ab wheel rollouts", sets: 3, resistanceType: "body" },
   { name: "Cable crunches", sets: 4, resistanceType: "weight" },
 ];
+
+function restTime(userAnswers) {
+  time = 0;
+
+  switch (userAnswers["What is your experience level?"]) {
+    case "Beginner":
+      time = 5;
+      break;
+    case "Novice":
+      time = 4;
+      break;
+    case "Intermediate":
+      time = 3;
+      break;
+    case "Advanced":
+      time = 2;
+      break;
+    case "Elite":
+      time = 1;
+      break;
+  }
+
+  return time;
+}
+
+function numberOfExercises(userAnswers) {
+  num = 0;
+
+  switch (userAnswers["What is your experience level?"]) {
+    case "Beginner":
+      num = 3;
+      break;
+    case "Novice":
+      num = 4;
+      break;
+    case "Intermediate":
+      num = 5;
+      break;
+    case "Advanced":
+      num = 5;
+      break;
+    case "Elite":
+      num = 6;
+      break;
+  }
+
+  return num;
+}
+
+function selectExercises(userAnswers) {
+  potentialExercises = [];
+
+  for (let element of userAnswers[
+    "What muscle groups do you want to focus on?"
+  ]) {
+    switch (element) {
+      case "Chest":
+        potentialExercises = potentialExercises.concat(chestExercises);
+        break;
+      case "Back":
+        potentialExercises = potentialExercises.concat(backExercises);
+        break;
+      case "Shoulders":
+        potentialExercises = potentialExercises.concat(shoulderExercises);
+        break;
+      case "Quads":
+        potentialExercises = potentialExercises.concat(quadExercises);
+        break;
+      case "Hamstrings":
+        potentialExercises = potentialExercises.concat(hamstringExercises);
+        break;
+      case "Calves":
+        potentialExercises = potentialExercises.concat(calfExercises);
+        break;
+      case "Biceps":
+        potentialExercises = potentialExercises.concat(bicepExercises);
+        break;
+      case "Triceps":
+        potentialExercises = potentialExercises.concat(tricepExercises);
+        break;
+      case "Forearms":
+        potentialExercises = potentialExercises.concat(forearmExercises);
+        break;
+      case "Abs":
+        potentialExercises = potentialExercises.concat(abExercises);
+        break;
+      default:
+      // Handle invalid muscle group
+    }
+  }
+
+  // Add exercises to final exercises list
+  finalExercises = [];
+  count = numberOfExercises(userAnswers);
+  for (let i = 0; i < count; i++) {
+    // Generate a random index based on the array length
+    let randomIndex = Math.floor(Math.random() * potentialExercises.length);
+
+    // Select the random element
+    let randomElement = potentialExercises[randomIndex];
+
+    finalExercises.push(randomElement);
+  }
+
+  return finalExercises;
+}
+
+console.log(
+  selectExercises({
+    "What muscle groups do you want to focus on?": ["Biceps", "Triceps"],
+  })
+);

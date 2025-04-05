@@ -128,6 +128,12 @@ function handleOkClick() {
       selectedOptions.push(button.innerText); // Push the text of the selected button
     });
 
+    if (selectedOptions.length === 0) {
+      // Alert if no options were selected
+      alert("Please select at least one option.");
+      return; // Stop further execution
+    }
+
     // Save the selected options to the userAnswers object
     userAnswers[currentQuestion.question] = selectedOptions;
 
@@ -160,6 +166,7 @@ function moveToNextQuestion() {
 
 // Call loadState function to load saved data, then load the first question
 window.onload = () => {
+  localStorage.clear();
   loadState();
   loadQuestion();
 };

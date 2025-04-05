@@ -43,15 +43,19 @@ input {
 
 .exercise-card {
   display: flex;
+  background-color: rgb(20, 20, 20);
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid white;
-  margin: 10px 0;
+  margin: 20px 0;
   padding: 10px 0;
   min-width: 750px;
   max-width: 1000px;
   border-radius: 1rem;
+
+  /* Moderate 3D effect */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6),
+    /* Subtle shadow below for depth */ 0 4px 6px rgba(255, 255, 255, 0.2); /* Light top highlight for a slight lifted effect */
 }
 
 .exercise-card:first-child {
@@ -84,8 +88,6 @@ input {
   justify-content: flex-end;
   align-items: center;
   gap: 0.5rem; /* adds space between button and timer */
-  border: 1px solid white;
-  border-radius: 0.5rem;
 }
 
 .rest-button {
@@ -97,6 +99,7 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 0.5rem;
 }
 
 .exercise-timer {

@@ -2,7 +2,7 @@
 const questions = [
   {
     question: "What is your gender?",
-    options: ["Male", "Female"],
+    options: ["Male", "Female", "Other"],
     showOkButton: false,
   },
   {

@@ -74,12 +74,36 @@ input {
   text-align: center;
 }
 
-.exercise-name {
+.exercise-name h2 {
   text-align: left;
 }
 
 .exercise-rest {
-  text-align: right;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem; /* adds space between button and timer */
+  border: 1px solid white;
+  border-radius: 0.5rem;
+}
+
+.rest-button {
+  padding: 0.5rem 1rem;
+  background-color: rgb(40, 40, 40);
+  color: white;
+  font-size: 1rem;
+  height: 2.5rem; /* Set a fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exercise-timer {
+  font-size: 1rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
 }
 
 .exercise-card-sub-header {

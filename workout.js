@@ -1,23 +1,41 @@
 window.onload = () => {
   const savedAnswers = localStorage.getItem("userAnswers");
+  const userAnswers = JSON.parse(savedAnswers);
 
-  if (savedAnswers) {
-    const userAnswers = JSON.parse(savedAnswers);
-    console.log("Loaded answers from localStorage:", userAnswers);
+  // Select all buttons with class 'rest-button'
+  const restButtons = document.querySelectorAll(".rest-button");
 
-    // Example: Show selected muscle groups
-    const workoutContainer = document.getElementById("workout-container");
-    const muscleGroups =
-      userAnswers["What muscle groups do you want to focus on?"];
+  restButtons.forEach((button, index) => {
+    let timeLeft = 180; // 3:00 in seconds
+    let timerInterval; // Variable to store the timer interval
+    let isTimerRunning = false; // Flag to check if the timer is already running
 
-    if (muscleGroups && muscleGroups.length > 0) {
-      workoutContainer.innerHTML = `<h2>Your workout will focus on:</h2><ul>${muscleGroups
-        .map((muscle) => `<li>${muscle}</li>`)
-        .join("")}</ul>`;
-    } else {
-      workoutContainer.innerHTML = `<p>No muscle groups selected.</p>`;
-    }
-  } else {
-    window.location.href = "index.html"; // Or wherever your questions are
-  }
+    // Update the button text with the time
+    const updateTimer = () => {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      button.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    };
+
+    // Start the timer when the button is clicked
+    button.addEventListener("click", () => {
+      if (isTimerRunning) {
+        return; // Don't start a new timer if one is already running
+      }
+
+      // Start the timer and mark it as running
+      isTimerRunning = true;
+
+      timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval); // Stop the timer
+          button.textContent = "Rest Timer"; // Reset button text when done
+          isTimerRunning = false; // Allow restarting the timer
+        } else {
+          timeLeft--;
+          updateTimer();
+        }
+      }, 1000);
+    });
+  });
 };

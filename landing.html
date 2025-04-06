@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workout Landing</title>
+    <link rel="stylesheet" href="landing.css" />
+  </head>
+  <body>
+    <div class="landing-container">
+      <h1 class="landing-title">Build Your Perfect Workout</h1>
+      <p class="landing-subtitle">
+        Tailored exercises. Smart training. Real results.
+      </p>
+      <div class="button-container">
+        <button class="option-button" onclick="startWorkout()">
+          Start Now
+        </button>
+        <button class="option-button secondary" onclick="learnMore()">
+          Learn More
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function startWorkout() {
+        window.location.href = "index.html"; // Go to your original question flow
+      }
+
+      function learnMore() {
+        alert("We personalize your workout based on your goals and body. 💪");
+      }
+    </script>
+  </body>
+</html>

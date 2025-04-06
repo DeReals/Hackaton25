@@ -50,22 +50,25 @@ window.onload = () => {
 
     button.addEventListener("click", () => {
       if (isTimerRunning) {
-        // Pause
+        // 🔁 Pause the timer
         clearInterval(timerInterval);
         isTimerRunning = false;
+        button.classList.add("paused"); // 🔁 Add pause style
         return;
       }
-
-      // Start or resume
+    
+      // 🔁 Start or resume the timer
       isTimerRunning = true;
+      button.classList.remove("paused"); // 🔁 Remove pause style
       updateTimer();
-
+    
       timerInterval = setInterval(() => {
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
           button.textContent = "Rest Timer";
           isTimerRunning = false;
           timeLeft = 180;
+          button.classList.remove("paused"); // just in case
         } else {
           timeLeft--;
           updateTimer();

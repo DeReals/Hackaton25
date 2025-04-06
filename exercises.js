@@ -25,10 +25,24 @@ function numberOfExercises(userAnswers) {
       break;
     case "Intermediate":
       num = 5;
+      if (
+        userAnswers["What muscle groups do you want to focus on?"].length == 2
+      ) {
+        num = 4;
+      }
       break;
     case "Advanced":
       num = 6;
+      if (
+        userAnswers["What muscle groups do you want to focus on?"].length == 2
+      ) {
+        num = 4;
+      }
       break;
+  }
+
+  if (userAnswers["What muscle groups do you want to focus on?"].length == 1) {
+    num = 3;
   }
 
   return num;
@@ -38,26 +52,26 @@ function selectExercises(muscleGroups, numExercises) {
   // Define a list of exercises for each muscle group
   const exercises = {
     Chest: [
-      { name: "Push-ups", reps: 10, sets: 2 },
-      { name: "Bench Press", reps: 8, sets: 4 },
-      { name: "Incline Dumbbell Press", reps: 10, sets: 3 },
-      { name: "Chest Flys", reps: 12, sets: 3 },
-      { name: "Dips", reps: 10, sets: 3 },
-      { name: "Chest Press Machine", reps: 10, sets: 3 },
-      { name: "Cable Crossovers", reps: 12, sets: 3 },
+      { name: "Push-ups", reps: 10, sets: 3, weight: "Bodyweight" },
+      { name: "Bench Press", reps: 8, sets: 4, weight: 45 },
+      { name: "Incline Dumbbell Press", reps: 10, sets: 3, weight: 5 },
+      { name: "Chest Flys", reps: 12, sets: 3, weight: 10 },
+      { name: "Dips", reps: 10, sets: 3, weight: "Bodyweight" },
+      { name: "Chest Press Machine", reps: 10, sets: 3, weight: 20 },
+      { name: "Cable Crossovers", reps: 12, sets: 3, weight: 10 },
     ],
     Back: [
-      { name: "Deadlifts", reps: 5, sets: 5 },
-      { name: "Pull-ups", reps: 10, sets: 3 },
-      { name: "Bent-over Rows", reps: 8, sets: 4 },
-      { name: "Lat Pulldown", reps: 10, sets: 3 },
-      { name: "T-Bar Rows", reps: 8, sets: 4 },
-      { name: "Face Pulls", reps: 12, sets: 3 },
-      { name: "Seated Rows", reps: 10, sets: 3 },
+      { name: "Deadlifts", reps: 5, sets: 5, weight: 45 },
+      { name: "Pull-ups", reps: 10, sets: 3, weight: "Bodyweight" },
+      { name: "Bent-over Rows", reps: 8, sets: 4, weight: 45 },
+      { name: "Lat Pulldown", reps: 10, sets: 3, weight: 10 },
+      { name: "T-Bar Rows", reps: 8, sets: 2, weight: 25 },
+      { name: "Face Pulls", reps: 12, sets: 3, weight: 10 },
+      { name: "Seated Rows", reps: 10, sets: 3, weight: 20 },
     ],
     Shoulders: [
-      { name: "Overhead Press", reps: 8, sets: 4 },
-      { name: "Lateral Raises", reps: 12, sets: 3 },
+      { name: "Overhead Press", reps: 8, sets: 4, weight: 45 },
+      { name: "Lateral Raises", reps: 12, sets: 5 },
       { name: "Front Raises", reps: 12, sets: 3 },
       { name: "Rear Delt Flys", reps: 12, sets: 3 },
       { name: "Arnold Press", reps: 10, sets: 3 },
@@ -65,7 +79,7 @@ function selectExercises(muscleGroups, numExercises) {
       { name: "Upright Rows", reps: 10, sets: 3 },
     ],
     Quads: [
-      { name: "Back Squats", reps: 6, sets: 5 },
+      { name: "Back Squats", reps: 6, sets: 3 },
       { name: "Front Squats", reps: 8, sets: 4 },
       { name: "Leg Press", reps: 10, sets: 3 },
       { name: "Walking Lunges", reps: 12, sets: 3 },
@@ -75,7 +89,7 @@ function selectExercises(muscleGroups, numExercises) {
     ],
     Hamstrings: [
       { name: "Romanian Deadlifts", reps: 10, sets: 3 },
-      { name: "Leg Curls", reps: 12, sets: 3 },
+      { name: "Leg Curls", reps: 12, sets: 4 },
       { name: "Good Mornings", reps: 10, sets: 3 },
       { name: "Glute-Ham Raises", reps: 10, sets: 3 },
       { name: "Kettlebell Swings", reps: 15, sets: 3 },
@@ -92,7 +106,7 @@ function selectExercises(muscleGroups, numExercises) {
     ],
     Biceps: [
       { name: "Barbell Curls", reps: 10, sets: 3 },
-      { name: "Dumbbell Curls", reps: 10, sets: 3 },
+      { name: "Dumbbell Curls", reps: 10, sets: 4 },
       { name: "Hammer Curls", reps: 12, sets: 3 },
       { name: "Preacher Curls", reps: 10, sets: 3 },
       { name: "Concentration Curls", reps: 12, sets: 3 },
@@ -114,11 +128,11 @@ function selectExercises(muscleGroups, numExercises) {
       { name: "Farmer's Carries", reps: 30, sets: 3 },
       { name: "Hammer Curls", reps: 12, sets: 3 },
       { name: "Reverse Curls", reps: 12, sets: 3 },
-      { name: "Dead Hangs", reps: 30, sets: 3 },
+      { name: "Dead Hangs", reps: 30, sets: 4 },
     ],
     Abs: [
       { name: "Crunches", reps: 20, sets: 3 },
-      { name: "Plank", reps: 60, sets: 3 }, // seconds
+      { name: "Plank", reps: "60 seconds", sets: 3 }, // seconds
       { name: "Russian Twists", reps: 30, sets: 3 },
       { name: "Leg Raises", reps: 15, sets: 3 },
       { name: "Bicycle Crunches", reps: 30, sets: 3 },

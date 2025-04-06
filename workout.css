@@ -39,6 +39,7 @@ input {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 3rem 0;
 }
 
 .exercise-card {
@@ -48,7 +49,7 @@ input {
   justify-content: center;
   align-items: center;
   margin: 20px 0;
-  padding: 10px 0;
+  padding: 20px 0;
   min-width: 750px;
   max-width: 1000px;
   border-radius: 1rem;
@@ -56,6 +57,12 @@ input {
   /* Moderate 3D effect */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6),
     /* Subtle shadow below for depth */ 0 4px 6px rgba(255, 255, 255, 0.2); /* Light top highlight for a slight lifted effect */
+}
+
+.exercise-card.active-card {
+  box-shadow: 0 10px 24px rgba(255, 255, 255, 0.5),
+    0 6px 12px rgba(255, 255, 255, 0.3);
+  transition: box-shadow 0.3s ease;
 }
 
 .exercise-card:first-child {
@@ -158,7 +165,7 @@ input {
   color: white;
   border: 1px solid #333;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin: 1rem 0 0 0;
+  margin: 1rem 0 2rem 0;
 }
 
 .ok-finish:hover {
@@ -174,7 +181,8 @@ input {
 
 /* ADDED: Keyframes for flash animation */
 @keyframes flash {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

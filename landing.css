@@ -14,17 +14,30 @@ body {
   align-items: center;
   text-align: center;
   padding: 2rem;
+  overflow: hidden;
 }
 
 .landing-container {
-  max-width: 600px;
+  max-width: 700px;
   padding: 3rem;
+  position: relative;
+  z-index: 10;
 }
 
 .landing-title {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: 3.2rem;
+  margin-bottom: 0.5rem;
   font-weight: bold;
+  white-space: nowrap;
+  padding: 0.5rem 0;
+  text-decoration: none; /* 🔻 ensure underline is removed */
+}
+
+.title-divider {
+  border: none;
+  border-top: 1px solid white;
+  margin: 1rem auto;
+  width: 80%;
 }
 
 .landing-subtitle {
@@ -36,35 +49,41 @@ body {
 .button-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
 }
 
 .option-button {
-  padding: 1rem;
-  border: 1px solid white;
-  border-radius: 0.5rem;
+  padding: 1rem 2rem;
   font-size: 1.2rem;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-color: rgb(40, 40, 40);
-  color: white;
+  border-radius: 0.5rem;
+  font-weight: bold;
   outline: none;
 }
 
-.option-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 1);
-  background-color: rgb(70, 70, 70);
-}
-
-.option-button.secondary {
-  background-color: transparent;
-  border-color: gray;
-  color: gray;
-}
-
-.option-button.secondary:hover {
-  background-color: rgb(60, 60, 60);
+.option-button.start-button {
+  background-color: green;
   color: white;
-  border-color: white;
+  border: none;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+  padding: 1rem 2.5rem;
+  font-size: 1.3rem;
+}
+
+.option-button.start-button:hover {
+  background-color: #007700;
+  transform: scale(1.05);
+}
+
+.floating-dumbbell {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 5;
+  width: 48px;
+  height: 48px;
 }

@@ -5,31 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Workout Landing</title>
     <link rel="stylesheet" href="landing.css" />
+    <style>
+      .floating-dumbbell svg {
+        transition: transform 0.05s linear;
+      }
+    </style>
   </head>
   <body>
     <div class="landing-container">
-      <h1 class="landing-title">Build Your Perfect Workout</h1>
+      <h1 class="landing-title">Your Perfect Workout</h1>
+      <hr class="title-divider" />
       <p class="landing-subtitle">
         Tailored exercises. Smart training. Real results.
       </p>
       <div class="button-container">
-        <button class="option-button" onclick="startWorkout()">
-          Start Now
-        </button>
-        <button class="option-button secondary" onclick="learnMore()">
-          Learn More
+        <div style="height: 1rem;"></div>
+        <button class="option-button start-button" onclick="startWorkout()">
+          I Want to Start Now
         </button>
       </div>
     </div>
 
     <script>
-      function startWorkout() {
-        window.location.href = "index.html"; // Go to your original question flow
+      const dumbbellCount = 20;
+      const dumbbellSize = 48;
+      const dumbbells = [];
+
+      // Create dumbbells with random starting positions and velocities.
+      function createDumbbells() {
+        for (let i = 0; i < dumbbellCount; i++) {
+          const dumbbell = document.createElement("div");
+          dumbbell.classList.add("floating-dumbbell");
+          dumbbell.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="limegreen" width="${dumbbellSize}" height="${dumbbellSize}">
+              <path d="M4 10v4h2v-4H4zm2-3h2v10H6V7zm10 0h2v10h-2V7zm2 3v4h2v-4h-2zM9 11h6v2H9v-2z"/>
+            </svg>`;
+          document.body.appendChild(dumbbell);
+
+          let angle = Math.random() * 2 * Math.PI;
+          let speed = Math.random() * 1 + 1; // speed between 1 and 2
+          dumbbells.push({
+            el: dumbbell,
+            x: Math.random() * (window.innerWidth - dumbbellSize),
+            y: Math.random() * (window.innerHeight - dumbbellSize),
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            angle: 0
+          });
+        }
       }
 
-      function learnMore() {
-        alert("We personalize your workout based on your goals and body. 💪");
+      // Returns the bounding ellipse of the landing container (text + surrounding oval)
+      function getTextOval() {
+        const container = document.querySelector(".landing-container").getBoundingClientRect();
+        return {
+          cx: (container.left + container.right) / 2,
+          cy: (container.top + container.bottom) / 2,
+          rx: container.width / 2 + 2,
+          ry: container.height / 2 + 2
+        };
       }
+
+      // Reflects a velocity vector (vx,vy) over a surface with normal (nx, ny)
+      function reflectVelocity(vx, vy, nx, ny) {
+        const dot = vx * nx + vy * ny;
+        return {
+          vx: vx - 2 * dot * nx,
+          vy: vy - 2 * dot * ny
+        };
+      }
+
+      // Main update loop for physics and drawing.
+      function updateDumbbells() {
+        const oval = getTextOval();
+
+        // Update each dumbbell’s position and check for collisions with boundaries and text oval.
+        dumbbells.forEach((db) => {
+          db.x += db.vx;
+          db.y += db.vy;
+
+          // Boundary collision (screen edges)
+          if (db.x < 0) {
+            db.x = 0;
+            db.vx = -db.vx;
+          } else if (db.x + dumbbellSize > window.innerWidth) {
+            db.x = window.innerWidth - dumbbellSize;
+            db.vx = -db.vx;
+          }
+          if (db.y < 0) {
+            db.y = 0;
+            db.vy = -db.vy;
+          } else if (db.y + dumbbellSize > window.innerHeight) {
+            db.y = window.innerHeight - dumbbellSize;
+            db.vy = -db.vy;
+          }
+
+          // Collision with the text oval.
+          const cx = db.x + dumbbellSize / 2;
+          const cy = db.y + dumbbellSize / 2;
+          const dx = cx - oval.cx;
+          const dy = cy - oval.cy;
+          // Check if the center of the dumbbell is inside the ellipse.
+          if ((dx * dx) / (oval.rx * oval.rx) + (dy * dy) / (oval.ry * oval.ry) < 1) {
+            const mag = Math.sqrt(dx * dx + dy * dy) || 1;
+            const nx = dx / mag;
+            const ny = dy / mag;
+            // Reflect the velocity.
+            const newV = reflectVelocity(db.vx, db.vy, nx, ny);
+            db.vx = newV.vx;
+            db.vy = newV.vy;
+            // Move the dumbbell just outside the ellipse.
+            db.x = oval.cx + nx * oval.rx - dumbbellSize / 2;
+            db.y = oval.cy + ny * oval.ry - dumbbellSize / 2;
+          }
+        });
+
+        // Check and resolve collisions between dumbbells using elastic collision physics.
+        for (let i = 0; i < dumbbells.length; i++) {
+          for (let j = i + 1; j < dumbbells.length; j++) {
+            const db1 = dumbbells[i];
+            const db2 = dumbbells[j];
+            const dx = (db2.x + dumbbellSize / 2) - (db1.x + dumbbellSize / 2);
+            const dy = (db2.y + dumbbellSize / 2) - (db1.y + dumbbellSize / 2);
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < dumbbellSize) {
+              // Normal vector.
+              const nx = dx / (dist || 1);
+              const ny = dy / (dist || 1);
+              // Relative velocity.
+              const dvx = db1.vx - db2.vx;
+              const dvy = db1.vy - db2.vy;
+              // Dot product of relative velocity with normal.
+              const dot = dvx * nx + dvy * ny;
+              // Only resolve if the dumbbells are moving towards each other.
+              if (dot < 0) {
+                // Update velocities based on elastic collision (equal mass).
+                db1.vx = db1.vx - dot * nx;
+                db1.vy = db1.vy - dot * ny;
+                db2.vx = db2.vx + dot * nx;
+                db2.vy = db2.vy + dot * ny;
+              }
+              // Separate overlapping dumbbells.
+              const overlap = dumbbellSize - dist;
+              db1.x -= nx * overlap / 2;
+              db1.y -= ny * overlap / 2;
+              db2.x += nx * overlap / 2;
+              db2.y += ny * overlap / 2;
+            }
+          }
+        }
+
+        // Update the DOM elements (position and rotation)
+        dumbbells.forEach((db) => {
+          // Adjust rotation for a natural spin (tweak factor as desired)
+          db.angle += (db.vx + db.vy) * 0.5;
+          db.el.querySelector("svg").style.transform = `rotate(${db.angle}deg)`;
+          db.el.style.transform = `translate(${db.x}px, ${db.y}px)`;
+        });
+
+        requestAnimationFrame(updateDumbbells);
+      }
+
+      function startWorkout() {
+        window.location.href = "index.html";
+      }
+
+      createDumbbells();
+      requestAnimationFrame(updateDumbbells);
     </script>
   </body>
 </html>

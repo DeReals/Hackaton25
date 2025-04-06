@@ -25,10 +25,24 @@ function numberOfExercises(userAnswers) {
       break;
     case "Intermediate":
       num = 5;
+      if (
+        userAnswers["What muscle groups do you want to focus on?"].length == 2
+      ) {
+        num = 4;
+      }
       break;
     case "Advanced":
       num = 6;
+      if (
+        userAnswers["What muscle groups do you want to focus on?"].length == 2
+      ) {
+        num = 4;
+      }
       break;
+  }
+
+  if (userAnswers["What muscle groups do you want to focus on?"].length == 1) {
+    num = 3;
   }
 
   return num;

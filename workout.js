@@ -4,8 +4,12 @@ window.onload = () => {
 
   console.log(userAnswers);
 
-  const muscleGroups = userAnswers["What muscle groups do you want to focus on?"];
-  const selected = selectExercises(muscleGroups, numberOfExercises(userAnswers));
+  const muscleGroups =
+    userAnswers["What muscle groups do you want to focus on?"];
+  const selected = selectExercises(
+    muscleGroups,
+    numberOfExercises(userAnswers)
+  );
   const NUM_EXERCISE_CARDS = numberOfExercises(userAnswers);
 
   function createExerciseCard(exercise) {
@@ -26,11 +30,16 @@ window.onload = () => {
         <h3>Weight (lbs)</h3>
       </div>
       <div class="exercise-card-splits">
-        ${Array(exercise.sets).fill(0).map(() => `
+        ${Array(exercise.sets)
+          .fill(0)
+          .map(
+            () => `
           <div class="exercise-card-individual-split">
             <input type="number" placeholder="${exercise.reps}" min="0" />
             <input type="number" placeholder="100" min="0" step="5" />
-          </div>`).join("")}
+          </div>`
+          )
+          .join("")}
       </div>
     `;
 
@@ -56,12 +65,12 @@ window.onload = () => {
         button.classList.add("paused"); // 🔁 Add pause style
         return;
       }
-    
+
       // 🔁 Start or resume the timer
       isTimerRunning = true;
       button.classList.remove("paused"); // 🔁 Remove pause style
       updateTimer();
-    
+
       timerInterval = setInterval(() => {
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
@@ -85,16 +94,28 @@ window.onload = () => {
     const card = createExerciseCard(exercise);
     container.insertBefore(card, document.querySelector(".ok-finish"));
   });
+
+  // Handle active card highlighting
+  const cards = document.querySelectorAll(".exercise-card");
+
+  cards.forEach((card) => {
+    card.addEventListener("pointerdown", () => {
+      cards.forEach((c) => c.classList.remove("active-card"));
+      card.classList.add("active-card");
+    });
+  });
 };
 
 // Placeholder functions you should define elsewhere:
 function selectExercises(muscleGroups, count) {
   // Mock example logic for selecting exercises
-  return Array(count).fill().map((_, i) => ({
-    name: `Exercise ${i + 1}`,
-    sets: 3,
-    reps: 10
-  }));
+  return Array(count)
+    .fill()
+    .map((_, i) => ({
+      name: `Exercise ${i + 1}`,
+      sets: 3,
+      reps: 10,
+    }));
 }
 
 function numberOfExercises(userAnswers) {

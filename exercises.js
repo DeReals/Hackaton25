@@ -3,9 +3,6 @@ function restTime(userAnswers) {
 
   switch (userAnswers["What is your experience level?"]) {
     case "Beginner":
-      time = 5;
-      break;
-    case "Novice":
       time = 4;
       break;
     case "Intermediate":
@@ -14,12 +11,9 @@ function restTime(userAnswers) {
     case "Advanced":
       time = 2;
       break;
-    case "Elite":
-      time = 1;
-      break;
   }
 
-  return time;
+  localStorage.setItem("suggestedRest", time);
 }
 
 function numberOfExercises(userAnswers) {
@@ -29,16 +23,10 @@ function numberOfExercises(userAnswers) {
     case "Beginner":
       num = 3;
       break;
-    case "Novice":
-      num = 4;
-      break;
     case "Intermediate":
       num = 5;
       break;
     case "Advanced":
-      num = 5;
-      break;
-    case "Elite":
       num = 6;
       break;
   }

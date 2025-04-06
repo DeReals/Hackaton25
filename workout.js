@@ -124,6 +124,8 @@ window.onload = () => {
 
       timerInterval = setInterval(() => {
         if (timeLeft <= 0) {
+          const audio = new Audio("audio/alarmSound.wav");
+          playAudioTwoTimesWithDelay(audio, 2000); // 2000ms delay (2 seconds)
           clearInterval(timerInterval);
           button.textContent = "Rest Timer";
           isTimerRunning = false;
@@ -145,6 +147,24 @@ window.onload = () => {
 
     return card;
   }
+
+  //play audio repeatedly
+  function playAudioTwoTimesWithDelay(audio, delay) {
+    let count = 0;
+
+    const playNext = () => {
+      if (count < 2) {
+        count++;
+        audio.play();
+        setTimeout(playNext, delay); // Add a delay before the next play
+      }
+    };
+
+    playNext(); // Start the first playback
+  }
+
+  // Example Usage:
+  const audio = new Audio("your-audio-file.mp3");
 
   // Add cards to the DOM
   const container = document.getElementById("main-body");

@@ -106,6 +106,13 @@ function loadQuestion() {
     const savedValue = userAnswers[currentQuestion.question];
     if (savedValue) input.value = savedValue;
 
+    // Listen for Enter key
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        handleOkClick();
+      }
+    });
+
     optionsElement.appendChild(input);
   }
 

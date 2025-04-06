@@ -7,108 +7,110 @@
   </head>
   <body>
     <style>
-      /* Container Styling */
-      #chat-container {
+      /* Main Container Styling */
+      #fitness-ai {
         width: 400px;
-        height: 500px;
-        margin: 30px auto;
-        display: flex;
-        flex-direction: column;
-        background: linear-gradient(135deg, #1a1a1a, #4d4d4d);
-        border: 2px solid #29c5f6;
-        border-radius: 12px;
-        box-shadow: 0 8px 15px rgba(41, 197, 246, 0.5);
-        font-family: "Courier New", monospace;
-        padding: 10px;
-        color: #f2f2f2;
+        margin: 20px auto;
+        padding: 15px;
+        border: 2px solid #0074d9;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #f9f9f9, #e3efff);
+        font-family: Arial, sans-serif;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      #fitness-ai:hover {
+        transform: scale(1.02); /* Slight zoom effect when hovered */
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
       }
 
       /* Chatbox Styling */
       #chatbox {
-        flex: 1;
+        height: 250px;
         overflow-y: auto;
-        background-color: #0f0f0f;
-        padding: 10px;
         margin-bottom: 10px;
-        border-radius: 8px;
-        border: 2px solid #29c5f6;
-        box-shadow: inset 0 2px 5px rgba(41, 197, 246, 0.3);
-        color: #29c5f6;
-        font-size: 14px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        background-color: #ffffff;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.2s;
       }
 
-      /* Input Container Styling */
-      #input-container {
+      #chatbox:hover {
+        background-color: #f0f8ff; /* Light glowing effect on hover */
+      }
+
+      /* Interactive Container Styling */
+      #interactive-container {
         display: flex;
         gap: 10px;
+        align-items: center;
+        justify-content: center;
       }
 
-      /* User Input Styling */
-      #user-input {
-        flex: 1;
+      input[type="text"] {
+        width: calc(100% - 80px);
         padding: 10px;
-        border-radius: 6px;
-        border: 2px solid #29c5f6;
-        box-shadow: 0 2px 5px rgba(41, 197, 246, 0.3);
-        background-color: #1a1a1a;
-        color: #29c5f6;
+        border-radius: 8px;
+        border: 2px solid #0074d9;
         font-size: 14px;
-        outline: none;
+        transition: border-color 0.2s ease-in-out;
       }
 
-      #user-input:focus {
-        border-color: #29c5f6;
-        box-shadow: 0 0 8px #29c5f6;
+      input[type="text"]:focus {
+        border-color: #005bb5; /* Highlight border on focus */
       }
 
-      /* Button Styling */
-      .send-button {
-        padding: 10px 15px;
-        background: linear-gradient(135deg, #1a1a1a, #29c5f6);
+      button {
+        width: 70px;
+        padding: 10px;
         border: none;
-        border-radius: 6px;
-        color: #f2f2f2;
+        border-radius: 8px;
+        background-color: #0074d9;
+        color: white;
         font-size: 14px;
         cursor: pointer;
-        box-shadow: 0 3px 8px rgba(41, 197, 246, 0.5);
-        text-transform: uppercase;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.2s ease-in-out, transform 0.2s;
       }
 
-      .send-button:hover {
-        background: linear-gradient(135deg, #0f0f0f, #29c5f6);
-        box-shadow: 0 0 12px #29c5f6;
+      button:hover {
+        background-color: #005bb5;
+        transform: translateY(-2px); /* Subtle lift effect on hover */
       }
 
-      .send-button:active {
-        box-shadow: inset 0 1px 5px #29c5f6;
+      /* Feedback Text Styling */
+      #feedback-text {
+        text-align: center;
+        margin-top: 15px;
+        color: #0074d9;
+        font-weight: bold;
+        font-size: 16px;
+        transition: opacity 0.3s;
+        opacity: 0.8; /* Adds a slightly transparent look */
       }
 
-      /* Glow Animation */
-      #chat-container:hover {
-        animation: glowEffect 2s infinite;
-      }
-
-      @keyframes glowEffect {
-        0% {
-          box-shadow: 0 8px 15px rgba(41, 197, 246, 0.5);
-        }
-        50% {
-          box-shadow: 0 8px 25px rgba(41, 197, 246, 0.8);
-        }
-        100% {
-          box-shadow: 0 8px 15px rgba(41, 197, 246, 0.5);
-        }
+      #feedback-text:hover {
+        opacity: 1; /* Brightens on hover */
       }
     </style>
     <!--This is for the AI Chat-->
-    <div id="chat-container">
+    <div id="fitness-ai">
+      <h2>Fitness AI Chat</h2>
       <div id="chatbox"></div>
-      <input
-        type="text"
-        id="user-input"
-        placeholder="Ask me anything about fitness!"
-      />
-      <button onclick="sendMessage()">Send</button>
+      <div id="interactive-container">
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Ask me anything about working out!"
+        />
+        <button onclick="sendMessage()">Ask</button>
+      </div>
+      <p id="feedback-text">
+        💪 Your fitness journey starts here! Type a question above.
+      </p>
     </div>
     <!--Script for the AI Chat-->
     <script>

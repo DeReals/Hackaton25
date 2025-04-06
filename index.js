@@ -1,14 +1,14 @@
 const questions = [
   {
+    question: "What is your name?",
+    type: "text",
+    showOkButton: false,
+  },
+  {
     question: "What is your gender?",
     options: ["Male", "Female", "Other"],
     type: "multiple-choice",
     showOkButton: false,
-  },
-  {
-    question: "What is your name?",
-    type: "text",
-    showOkButton: true,
   },
   {
     question: "What is your fitness experience level?",

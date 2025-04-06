@@ -27,11 +27,69 @@
     </div>
 
     <script>
-      const dumbbellCount = 20;
+      // Settings
+      const dumbbellCount = 23;
       const dumbbellSize = 48;
+      const collisionBuffer = 3;       // Extra collision buffer (pixels)
+      const velocityDamping = 0.85;      // Damping factor on collisions
+      const speedBoost = 0.1;            // Additional speed boost on bounce
+      const rectShrink = 5;              // Shrink the landing container's rectangle for collision
+      const stuckSpeedThreshold = 0.2;   // Speed below which a dumbbell is considered "stuck"
+      const stuckTimeLimit = 3;          // Seconds to trigger explosion impulse for stuck dumbbells
+      const explosionImpulse = 3;        // Impulse magnitude for dispersion
+      const explosionRadius = 150;       // Radius for click explosion effect
       const dumbbells = [];
 
-      // Create dumbbells with random starting positions and velocities.
+      // Utility: Return a random number between min and max.
+      function randomBetween(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      // Utility: Clamp a value between min and max.
+      function clamp(val, min, max) {
+        return Math.max(min, Math.min(max, val));
+      }
+
+      // Get the bounding rectangle for the landing container (text obstacle), shrunk slightly.
+      function getTextRect() {
+        const container = document
+          .querySelector(".landing-container")
+          .getBoundingClientRect();
+        return {
+          left: container.left + rectShrink,
+          top: container.top + rectShrink,
+          right: container.right - rectShrink,
+          bottom: container.bottom - rectShrink
+        };
+      }
+
+      // Check if a point (x,y) is inside the landing container rectangle.
+      function isInTextRect(x, y) {
+        const rect = getTextRect();
+        const cx = x + dumbbellSize / 2;
+        const cy = y + dumbbellSize / 2;
+        return (cx > rect.left && cx < rect.right && cy > rect.top && cy < rect.bottom);
+      }
+
+      // Check collision between a circle (center cx, cy with radius r) and a rectangle.
+      function circleRectCollision(cx, cy, r, rect) {
+        const closestX = clamp(cx, rect.left, rect.right);
+        const closestY = clamp(cy, rect.top, rect.bottom);
+        const dx = cx - closestX;
+        const dy = cy - closestY;
+        return dx * dx + dy * dy < r * r;
+      }
+
+      // Reflect a velocity vector (vx, vy) over a surface normal (nx, ny), then apply damping.
+      function reflectVelocity(vx, vy, nx, ny) {
+        const dot = vx * nx + vy * ny;
+        return {
+          vx: (vx - 2 * dot * nx) * velocityDamping,
+          vy: (vy - 2 * dot * ny) * velocityDamping
+        };
+      }
+
+      // Create dumbbells at random positions on the screen (avoiding the text container).
       function createDumbbells() {
         for (let i = 0; i < dumbbellCount; i++) {
           const dumbbell = document.createElement("div");
@@ -42,111 +100,135 @@
             </svg>`;
           document.body.appendChild(dumbbell);
 
-          let angle = Math.random() * 2 * Math.PI;
-          let speed = Math.random() * 1 + 1; // speed between 1 and 2
+          let x = randomBetween(0, window.innerWidth - dumbbellSize);
+          let y = randomBetween(0, window.innerHeight - dumbbellSize);
+          // Re-calculate if the dumbbell would spawn within the landing container.
+          while (isInTextRect(x, y)) {
+            x = randomBetween(0, window.innerWidth - dumbbellSize);
+            y = randomBetween(0, window.innerHeight - dumbbellSize);
+          }
+          let angle = randomBetween(0, 2 * Math.PI);
+          let speed = randomBetween(1, 2);
           dumbbells.push({
             el: dumbbell,
-            x: Math.random() * (window.innerWidth - dumbbellSize),
-            y: Math.random() * (window.innerHeight - dumbbellSize),
+            x: x,
+            y: y,
             vx: Math.cos(angle) * speed,
             vy: Math.sin(angle) * speed,
-            angle: 0
+            angle: 0,
+            rotationSpeed: randomBetween(0.9, 1.4), // Random rotation speed between 0.9 and 1.4.
+            baseSpeed: speed,  // Store base speed for decay.
+            stuckTime: 0       // Timer to track if the dumbbell is nearly stationary.
           });
         }
       }
 
-      // Returns the bounding ellipse of the landing container (text + surrounding oval)
-      function getTextOval() {
-        const container = document.querySelector(".landing-container").getBoundingClientRect();
-        return {
-          cx: (container.left + container.right) / 2,
-          cy: (container.top + container.bottom) / 2,
-          rx: container.width / 2 + 2,
-          ry: container.height / 2 + 2
-        };
-      }
+      // Update positions and handle collisions with boundaries and the landing container.
+      function updatePositions(dt) {
+        const rect = getTextRect();
+        dumbbells.forEach(db => {
+          // Update position based on velocity.
+          db.x += db.vx * dt;
+          db.y += db.vy * dt;
 
-      // Reflects a velocity vector (vx,vy) over a surface with normal (nx, ny)
-      function reflectVelocity(vx, vy, nx, ny) {
-        const dot = vx * nx + vy * ny;
-        return {
-          vx: vx - 2 * dot * nx,
-          vy: vy - 2 * dot * ny
-        };
-      }
-
-      // Main update loop for physics and drawing.
-      function updateDumbbells() {
-        const oval = getTextOval();
-
-        // Update each dumbbell’s position and check for collisions with boundaries and text oval.
-        dumbbells.forEach((db) => {
-          db.x += db.vx;
-          db.y += db.vy;
-
-          // Boundary collision (screen edges)
+          // Boundary collisions.
           if (db.x < 0) {
             db.x = 0;
-            db.vx = -db.vx;
+            db.vx = -db.vx * velocityDamping;
           } else if (db.x + dumbbellSize > window.innerWidth) {
             db.x = window.innerWidth - dumbbellSize;
-            db.vx = -db.vx;
+            db.vx = -db.vx * velocityDamping;
           }
           if (db.y < 0) {
             db.y = 0;
-            db.vy = -db.vy;
+            db.vy = -db.vy * velocityDamping;
           } else if (db.y + dumbbellSize > window.innerHeight) {
             db.y = window.innerHeight - dumbbellSize;
-            db.vy = -db.vy;
+            db.vy = -db.vy * velocityDamping;
           }
 
-          // Collision with the text oval.
+          // Collision with the landing container.
           const cx = db.x + dumbbellSize / 2;
           const cy = db.y + dumbbellSize / 2;
-          const dx = cx - oval.cx;
-          const dy = cy - oval.cy;
-          // Check if the center of the dumbbell is inside the ellipse.
-          if ((dx * dx) / (oval.rx * oval.rx) + (dy * dy) / (oval.ry * oval.ry) < 1) {
-            const mag = Math.sqrt(dx * dx + dy * dy) || 1;
-            const nx = dx / mag;
-            const ny = dy / mag;
-            // Reflect the velocity.
-            const newV = reflectVelocity(db.vx, db.vy, nx, ny);
-            db.vx = newV.vx;
-            db.vy = newV.vy;
-            // Move the dumbbell just outside the ellipse.
-            db.x = oval.cx + nx * oval.rx - dumbbellSize / 2;
-            db.y = oval.cy + ny * oval.ry - dumbbellSize / 2;
+          const effectiveRadius = dumbbellSize / 2 + collisionBuffer;
+          if (circleRectCollision(cx, cy, effectiveRadius, rect)) {
+            const closestX = clamp(cx, rect.left, rect.right);
+            const closestY = clamp(cy, rect.top, rect.bottom);
+            let dx = cx - closestX;
+            let dy = cy - closestY;
+            let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+            let nx = dx / dist;
+            let ny = dy / dist;
+            // Push the dumbbell out of the rectangle.
+            const penetration = effectiveRadius - dist;
+            db.x += nx * penetration;
+            db.y += ny * penetration;
+            // Reflect the velocity with a soft impulse.
+            const fullReflected = reflectVelocity(db.vx, db.vy, nx, ny);
+            const impulseFactor = 0.4;
+            db.vx = db.vx + (fullReflected.vx - db.vx) * impulseFactor;
+            db.vy = db.vy + (fullReflected.vy - db.vy) * impulseFactor;
+            // Apply a speed boost.
+            let currentSpeed = Math.sqrt(db.vx * db.vx + db.vy * db.vy);
+            let boostFactor = (currentSpeed + speedBoost) / currentSpeed;
+            db.vx *= boostFactor;
+            db.vy *= boostFactor;
+          }
+
+          // Gradually decay speed back to the baseSpeed if too high.
+          let currentSpeed = Math.sqrt(db.vx * db.vx + db.vy * db.vy);
+          if (currentSpeed > db.baseSpeed) {
+            let newSpeed = currentSpeed - (currentSpeed - db.baseSpeed) * 0.05;
+            db.vx = (db.vx / currentSpeed) * newSpeed;
+            db.vy = (db.vy / currentSpeed) * newSpeed;
+          }
+
+          // Check if the dumbbell is "stuck" (moving too slowly).
+          if (currentSpeed < stuckSpeedThreshold) {
+            db.stuckTime += dt;
+            if (db.stuckTime > stuckTimeLimit) {
+              let explosionAngle = randomBetween(0, 2 * Math.PI);
+              db.vx += Math.cos(explosionAngle) * explosionImpulse;
+              db.vy += Math.sin(explosionAngle) * explosionImpulse;
+              db.stuckTime = 0;
+            }
+          } else {
+            db.stuckTime = 0;
           }
         });
+      }
 
-        // Check and resolve collisions between dumbbells using elastic collision physics.
+      // Resolve collisions between dumbbells.
+      function resolveCollisions() {
         for (let i = 0; i < dumbbells.length; i++) {
           for (let j = i + 1; j < dumbbells.length; j++) {
             const db1 = dumbbells[i];
             const db2 = dumbbells[j];
-            const dx = (db2.x + dumbbellSize / 2) - (db1.x + dumbbellSize / 2);
-            const dy = (db2.y + dumbbellSize / 2) - (db1.y + dumbbellSize / 2);
+            const cx1 = db1.x + dumbbellSize / 2;
+            const cy1 = db1.y + dumbbellSize / 2;
+            const cx2 = db2.x + dumbbellSize / 2;
+            const cy2 = db2.y + dumbbellSize / 2;
+            const dx = cx2 - cx1;
+            const dy = cy2 - cy1;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < dumbbellSize) {
-              // Normal vector.
-              const nx = dx / (dist || 1);
-              const ny = dy / (dist || 1);
-              // Relative velocity.
+            const minDist = dumbbellSize + 2 * collisionBuffer;
+            if (dist < minDist && dist > 0) {
+              const nx = dx / dist;
+              const ny = dy / dist;
               const dvx = db1.vx - db2.vx;
               const dvy = db1.vy - db2.vy;
-              // Dot product of relative velocity with normal.
-              const dot = dvx * nx + dvy * ny;
-              // Only resolve if the dumbbells are moving towards each other.
-              if (dot < 0) {
-                // Update velocities based on elastic collision (equal mass).
-                db1.vx = db1.vx - dot * nx;
-                db1.vy = db1.vy - dot * ny;
-                db2.vx = db2.vx + dot * nx;
-                db2.vy = db2.vy + dot * ny;
+              const vn = dvx * nx + dvy * ny;
+              if (vn < 0) {
+                db1.vx -= vn * nx * 0.5;
+                db1.vy -= vn * ny * 0.5;
+                db2.vx += vn * nx * 0.5;
+                db2.vy += vn * ny * 0.5;
+                db1.vx *= velocityDamping;
+                db1.vy *= velocityDamping;
+                db2.vx *= velocityDamping;
+                db2.vy *= velocityDamping;
               }
-              // Separate overlapping dumbbells.
-              const overlap = dumbbellSize - dist;
+              const overlap = minDist - dist;
               db1.x -= nx * overlap / 2;
               db1.y -= ny * overlap / 2;
               db2.x += nx * overlap / 2;
@@ -154,22 +236,53 @@
             }
           }
         }
+      }
 
-        // Update the DOM elements (position and rotation)
-        dumbbells.forEach((db) => {
-          // Adjust rotation for a natural spin (tweak factor as desired)
-          db.angle += (db.vx + db.vy) * 0.5;
+      // Update the DOM: set position and rotation for each dumbbell.
+      function updateDOM() {
+        dumbbells.forEach(db => {
+          db.angle += db.rotationSpeed;
           db.el.querySelector("svg").style.transform = `rotate(${db.angle}deg)`;
           db.el.style.transform = `translate(${db.x}px, ${db.y}px)`;
         });
+      }
 
+      // Main update loop using substeps for smoother physics.
+      function updateDumbbells() {
+        const subSteps = 4;
+        for (let s = 0; s < subSteps; s++) {
+          updatePositions(1 / subSteps);
+          resolveCollisions();
+        }
+        updateDOM();
         requestAnimationFrame(updateDumbbells);
       }
+
+      // Click explosion: on click, any dumbbell within explosionRadius receives an impulse away from the click.
+      document.addEventListener("click", function(e) {
+        const clickX = e.clientX;
+        const clickY = e.clientY;
+        dumbbells.forEach(db => {
+          const cx = db.x + dumbbellSize / 2;
+          const cy = db.y + dumbbellSize / 2;
+          const dx = cx - clickX;
+          const dy = cy - clickY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < explosionRadius) {
+            const angle = Math.atan2(dy, dx);
+            // Calculate an impulse that is stronger the closer the dumbbell is to the click.
+            const factor = (explosionRadius - distance) / explosionRadius;
+            db.vx += Math.cos(angle) * explosionImpulse * factor;
+            db.vy += Math.sin(angle) * explosionImpulse * factor;
+          }
+        });
+      });
 
       function startWorkout() {
         window.location.href = "index.html";
       }
 
+      // Start the simulation.
       createDumbbells();
       requestAnimationFrame(updateDumbbells);
     </script>

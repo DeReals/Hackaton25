@@ -153,15 +153,25 @@ function handleOkClick() {
   moveToNextQuestion();
 }
 
-// Function to move to the next question
 function moveToNextQuestion() {
   // Increment question index
   currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
 
-  // If all questions have been answered, redirect to workout.html
+  // If all questions have been answered, show the loading screen before redirecting
   if (currentQuestionIndex === 0) {
     console.log("All questions answered. Saving results:", userAnswers);
-    window.location.href = "workout.html"; // Redirect to workout.html after all questions are answered
+
+    // Clear the content of the question container
+    const questionContainer = document.getElementById("question-container");
+    questionContainer.innerHTML = ""; // Clears everything inside the question container
+
+    // Show the loading screen
+    document.getElementById("loading-screen").style.display = "flex";
+
+    // Simulate loading process with a timeout (e.g., 3 seconds)
+    setTimeout(() => {
+      window.location.href = "workout.html"; // Redirect to workout.html after "loading"
+    }, 3000); // 3 seconds delay for loading
   } else {
     loadQuestion();
   }

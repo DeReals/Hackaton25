@@ -161,17 +161,20 @@ function moveToNextQuestion() {
   if (currentQuestionIndex === 0) {
     console.log("All questions answered. Saving results:", userAnswers);
 
-    // Clear the content of the question container
-    const questionContainer = document.getElementById("question-container");
-    questionContainer.innerHTML = ""; // Clears everything inside the question container
+    // Hide the main content
+    document.getElementById("question-container").style.display = "none";
 
     // Show the loading screen
-    document.getElementById("loading-screen").style.display = "flex";
+    document.getElementById("loading-container").style.display = "flex";
 
-    // Simulate loading process with a timeout (e.g., 3 seconds)
+    // Save state before redirect
+    saveState();
+
+    // Wait for a few seconds before redirecting (simulate loading)
     setTimeout(() => {
-      window.location.href = "workout.html"; // Redirect to workout.html after "loading"
-    }, 3000); // 3 seconds delay for loading
+      // After 3 seconds, redirect to the next page
+      window.location.href = "workout.html"; // Redirect to your desired page
+    }, 3000); // 3000ms = 3 seconds
   } else {
     loadQuestion();
   }

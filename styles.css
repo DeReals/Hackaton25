@@ -102,3 +102,54 @@ body {
   box-shadow: 0 4px 10px rgb(184, 181, 181);
   background-color: rgb(70, 70, 70);
 }
+
+#loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.dot-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100px; /* Total width of the 3 dots */
+  margin-bottom: 1rem;
+}
+
+.dot {
+  width: 15px;
+  height: 15px;
+  background-color: rgb(0, 255, 128); /* Blue color for the dots */
+  border-radius: 50%;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.dot:nth-child(1) {
+  animation-delay: 0s; /* First dot starts immediately */
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s; /* Second dot starts a bit later */
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s; /* Third dot starts even later */
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 20px;
+  color: white;
+  font-weight: 500;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-20px); /* Bounces upwards */
+  }
+}

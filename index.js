@@ -12,7 +12,7 @@ const questions = [
   },
   {
     question: "What do you want to train?",
-    options: ["Push", "Pull", "Legs", "Create Your Workout"],
+    options: ["Push", "Pull", "Legs", "Select Individually"],
     showOkButton: false,
   },
   {
@@ -158,33 +158,67 @@ function handleOkClick() {
   moveToNextQuestion();
 }
 
+function loadingScreen() {
+  // Hide the main content
+  document.getElementById("question-container").style.display = "none";
+
+  // Show the loading screen
+  document.getElementById("loading-container").style.display = "flex";
+
+  // Save state before redirect
+  saveState();
+
+  // Wait for a few seconds before redirecting (simulate loading)
+  setTimeout(() => {
+    window.location.href = "workout.html"; // Redirect to your desired page
+  }, 3000); // 3 seconds
+}
+
 function moveToNextQuestion() {
+  const currentQuestion = questions[currentQuestionIndex];
+  const userAnswer = userAnswers[currentQuestion.question];
+
+  // Special logic for "What do you want to train?"
+  if (currentQuestion.question === "What do you want to train?") {
+    if (userAnswer === "Select Individually") {
+      currentQuestionIndex++; // Move to muscle group question
+      loadQuestion();
+      saveState();
+      return;
+    } else {
+      // Pre-fill muscle groups based on training type
+      const muscleGroups = {
+        Push: ["Chest", "Shoulders", "Triceps"],
+        Pull: ["Back", "Biceps", "Forearms", "Abs"],
+        Legs: ["Quads", "Hamstrings", "Calves"],
+      };
+
+      // Save the pre-filled muscle groups
+      userAnswers["What muscle groups do you want to focus on?"] =
+        muscleGroups[userAnswer] || [];
+
+      // Go to loading screen
+      console.log(
+        "Auto-selected muscle groups:",
+        userAnswers["What muscle groups do you want to focus on?"]
+      );
+      loadingScreen();
+      return;
+    }
+  }
+
   // Increment question index
   currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
 
-  // If all questions have been answered, show the loading screen before redirecting
+  // If all questions have been answered
   if (currentQuestionIndex === 0) {
     console.log("All questions answered. Saving results:", userAnswers);
-
-    // Hide the main content
-    document.getElementById("question-container").style.display = "none";
-
-    // Show the loading screen
-    document.getElementById("loading-container").style.display = "flex";
-
-    // Save state before redirect
-    saveState();
-
-    // Wait for a few seconds before redirecting (simulate loading)
-    setTimeout(() => {
-      // After 3 seconds, redirect to the next page
-      window.location.href = "workout.html"; // Redirect to your desired page
-    }, 3000); // 3000ms = 3 seconds
+    loadingScreen(); // Show loading screen
   } else {
-    loadQuestion();
+    loadQuestion(); // Load the next question
   }
 
-  // Save the state after moving to the next question
+  // Save the state
   saveState();
 }
 

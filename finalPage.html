@@ -217,34 +217,55 @@
       emailjs.init("gRM4tPDyr-qFanaFT"); // Replace this with your actual User ID
 
       function sendEmail() {
-        var userEmail = document.getElementById("email").value;
-        console.log(userEmail);
+        const userEmail = document.getElementById("email").value;
 
-        // Check if the email field is not empty
-        if (userEmail) {
-          const templateParams = {
-            name: "Aidan", // Ensure this matches the template placeholder
-            title: "Beast", // Ensure this matches the template placeholder
-            email: userEmail, // Ensure this matches the template placeholder
-          };
-
-          // Send the email using EmailJS
-          emailjs
-            .send("service_nm5iuoq", "template_g6k5ann", templateParams)
-            .then(
-              function (response) {
-                alert("Email sent successfully!");
-              },
-              function (error) {
-                alert(
-                  "Failed to send email. Please try again. Error: " +
-                    JSON.stringify(error)
-                );
-              }
-            );
-        } else {
+        if (!userEmail) {
           alert("Please enter a valid email address.");
+          return;
         }
+
+        const summaryData = JSON.parse(localStorage.getItem("workoutSummary"));
+
+        if (!summaryData) {
+          alert("Workout summary not found.");
+          return;
+        }
+
+        const { duration, exercises } = summaryData;
+        const today = new Date().toLocaleDateString();
+
+        let workoutText = `Workout Duration: ${duration}\n\n`;
+
+        exercises.forEach((exercise, index) => {
+          workoutText += `Exercise ${index + 1}: ${exercise.name}\n`;
+          exercise.sets.forEach((set, i) => {
+            workoutText += `  Set ${i + 1}: ${set.reps} reps @ ${
+              set.weight
+            } lbs\n`;
+          });
+          workoutText += "\n";
+        });
+
+        const templateParams = {
+          name: "Athlete", // Change or personalize if desired
+          email: userEmail,
+          date: today,
+          summary: workoutText,
+        };
+
+        emailjs
+          .send("service_nm5iuoq", "template_g6k5ann", templateParams)
+          .then(
+            function (response) {
+              alert("Email sent successfully!");
+            },
+            function (error) {
+              alert(
+                "Failed to send email. Please try again. Error: " +
+                  JSON.stringify(error)
+              );
+            }
+          );
       }
 
       // Add an event listener to the email input to submit on 'Enter' key press

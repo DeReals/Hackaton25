@@ -59,8 +59,7 @@ window.onload = () => {
     userAnswers["What muscle groups do you want to focus on?"];
   const selected = selectExercises(
     muscleGroups,
-    numberOfExercises(userAnswers),
-    userAnswers["What is your experience level?"]
+    numberOfExercises(userAnswers)
   );
   const NUM_EXERCISE_CARDS = numberOfExercises(userAnswers);
 
@@ -88,7 +87,7 @@ window.onload = () => {
             () => `
           <div class="exercise-card-individual-split">
             <input type="number" placeholder="${exercise.reps}" min="0" />
-            <input type="number" placeholder="" min="0" step="5" />
+            <input type="number" placeholder="100" min="0" step="5" />
           </div>`
           )
           .join("")}

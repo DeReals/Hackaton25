@@ -19,15 +19,20 @@
       </button>
       <script>
         function saveCardInputs() {
-          window.location.href = "finalPage.html";
-          //window.location.href = "summary.html";
-          const cards = document.querySelectorAll(".exercise-card"); // Select all exercise cards
-          const cardData = []; // Array to store card details
+          // Get workout duration from the button or element with id="start-timer-button"
+          const workoutDurationElement =
+            document.getElementById("start-timer-button");
+          const workoutDuration = workoutDurationElement
+            ? workoutDurationElement.textContent.trim()
+            : "Duration not found";
+
+          // Collect exercise card data
+          const cards = document.querySelectorAll(".exercise-card");
+          const cardData = [];
 
           cards.forEach((card) => {
             const exerciseName =
               card.querySelector(".exercise-name h2").textContent;
-
             const splits = card.querySelectorAll(
               ".exercise-card-individual-split"
             );
@@ -49,19 +54,18 @@
             });
           });
 
-          // Save card data into local storage
-          localStorage.setItem("exerciseCardData", JSON.stringify(cardData));
-          console.log("Data saved to local storage:", cardData); // Optional: Log data for debugging
-        }
+          // Save everything into localStorage
+          const workoutData = {
+            duration: workoutDuration,
+            exercises: cardData,
+          };
 
-        // Example usage:
-        window.onload = () => {
-          document
-            .getElementById("finish-button")
-            .addEventListener("click", () => {
-              saveCardInputs(); // Save user inputs when the Finish button is clicked
-            });
-        };
+          localStorage.setItem("workoutSummary", JSON.stringify(workoutData));
+          console.log("Data saved to local storage:", workoutData);
+
+          // Navigate to final page
+          window.location.href = "finalPage.html";
+        }
       </script>
     </div>
     <script src="workout.js"></script>

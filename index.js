@@ -1,18 +1,30 @@
-// Array to hold multiple questions
 const questions = [
   {
     question: "What is your gender?",
     options: ["Male", "Female", "Other"],
+    type: "multiple-choice",
     showOkButton: false,
+  },
+  {
+    question: "What is your age?",
+    type: "text",
+    showOkButton: true,
+  },
+  {
+    question: "What is your weight (in lbs)?",
+    type: "text",
+    showOkButton: true,
   },
   {
     question: "What is your experience level?",
     options: ["Beginner", "Intermediate", "Advanced"],
+    type: "multiple-choice",
     showOkButton: false,
   },
   {
     question: "What do you want to train?",
     options: ["Push", "Pull", "Legs", "Select Individually"],
+    type: "multiple-choice",
     showOkButton: false,
   },
   {
@@ -29,6 +41,7 @@ const questions = [
       "Forearms",
       "Abs",
     ],
+    type: "multiple-choice",
     showOkButton: true,
   },
 ];
@@ -60,9 +73,7 @@ function saveState() {
 let currentQuestionIndex = 0;
 let userAnswers = {};
 
-// Function to load the current question and options dynamically
 function loadQuestion() {
-  // Get the question and options container elements
   const questionElement = document.getElementById("question");
   const optionsElement = document.getElementById("question-options");
   const okButtonElement = document.getElementById("ok-button");
@@ -70,38 +81,44 @@ function loadQuestion() {
 
   const currentQuestion = questions[currentQuestionIndex];
 
-  // Load the question text
   questionElement.innerText = currentQuestion.question;
+  optionsElement.innerHTML = ""; // Clear old content
 
-  // Clear any previous options
-  optionsElement.innerHTML = "";
+  // Render based on question type
+  if (currentQuestion.type === "multiple-choice") {
+    currentQuestion.options.forEach((option) => {
+      const optionButton = document.createElement("button");
+      optionButton.innerText = option;
+      optionButton.classList.add("option-button");
 
-  // Loop through the options and create a button for each
-  currentQuestion.options.forEach((option, index) => {
-    const optionButton = document.createElement("button");
-    optionButton.innerText = option;
-    optionButton.classList.add("option-button");
+      optionButton.addEventListener("click", () =>
+        handleOptionClick(optionButton)
+      );
+      optionsElement.appendChild(optionButton);
+    });
+  } else if (currentQuestion.type === "text") {
+    const input = document.createElement("input");
+    input.type = "number"; // or "text" if needed
+    input.classList.add("text-input");
+    input.id = "text-input";
 
-    optionButton.addEventListener("click", () =>
-      handleOptionClick(optionButton)
-    );
-    optionsElement.appendChild(optionButton);
-  });
+    // Pre-fill saved value if it exists
+    const savedValue = userAnswers[currentQuestion.question];
+    if (savedValue) input.value = savedValue;
 
-  // Handle the "Ok" button visibility
+    optionsElement.appendChild(input);
+  }
+
+  // Handle Ok button visibility
   if (currentQuestion.showOkButton) {
     okButtonElement.style.display = "block";
-    okButtonElement.addEventListener("click", handleOkClick);
+    okButtonElement.onclick = handleOkClick;
   } else {
     okButtonElement.style.display = "none";
   }
 
-  // Disable or hide the Back button on the first question
-  if (currentQuestionIndex === 0) {
-    backButtonElement.style.display = "none"; // Hide the Back button
-  } else {
-    backButtonElement.style.display = "block"; // Show the Back button
-  }
+  backButtonElement.style.display =
+    currentQuestionIndex === 0 ? "none" : "block";
 }
 
 // Handle when an option button is clicked
@@ -125,36 +142,36 @@ function handleOptionClick(optionButton) {
 }
 
 function handleOkClick() {
-  console.log("Ok button clicked!");
   const currentQuestion = questions[currentQuestionIndex];
 
-  if (currentQuestion.showOkButton) {
-    // Get all the selected options for muscle groups
+  if (currentQuestion.type === "text") {
+    const input = document.getElementById("text-input");
+    const value = input.value.trim();
+
+    if (!value) {
+      alert("Please enter a value.");
+      return;
+    }
+
+    userAnswers[currentQuestion.question] = value;
+  } else if (currentQuestion.showOkButton) {
     const selectedOptions = [];
     const selectedButtons = document.querySelectorAll(
       ".option-button.selected"
-    ); // Get all selected buttons
-
+    );
     selectedButtons.forEach((button) => {
-      selectedOptions.push(button.innerText); // Push the text of the selected button
+      selectedOptions.push(button.innerText);
     });
 
     if (selectedOptions.length === 0) {
-      // Alert if no options were selected
       alert("Please select at least one option.");
-      return; // Stop further execution
+      return;
     }
 
-    // Save the selected options to the userAnswers object
     userAnswers[currentQuestion.question] = selectedOptions;
-
-    console.log("You selected: " + selectedOptions.join(", "));
   }
 
-  // Save the state after Ok button is clicked
   saveState();
-
-  // After Ok button is clicked, move to the next question
   moveToNextQuestion();
 }
 

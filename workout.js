@@ -1,4 +1,55 @@
 window.onload = () => {
+  // Ask for push notification permission as soon as the page loads
+  if (Notification.permission !== "granted") {
+    Notification.requestPermission();
+  }
+
+  // Workout duration timer setup
+  const startTimerBtn = document.getElementById("start-timer-button");
+  let totalSeconds = 0;
+  let workoutInterval = null;
+  let isWorkoutRunning = false;
+  let isPaused = false;
+
+  startTimerBtn.textContent = "START"; // show "START" at the beginning
+
+  const updateTimerDisplay = () => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    startTimerBtn.textContent = `${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  startTimerBtn.addEventListener("click", () => {
+    if (!isWorkoutRunning) {
+      // Start for the first time
+      isWorkoutRunning = true;
+      isPaused = false;
+
+      // ✅ Undim all cards on first start
+      document.querySelectorAll(".exercise-card.dimmed").forEach((card) => {
+        card.classList.remove("dimmed");
+      });
+
+      workoutInterval = setInterval(() => {
+        totalSeconds++;
+        updateTimerDisplay();
+      }, 1000);
+    } else if (!isPaused) {
+      // Pause
+      clearInterval(workoutInterval);
+      isPaused = true;
+    } else {
+      // Resume
+      isPaused = false;
+      workoutInterval = setInterval(() => {
+        totalSeconds++;
+        updateTimerDisplay();
+      }, 1000);
+    }
+  });
+
   const savedAnswers = localStorage.getItem("userAnswers");
   const userAnswers = JSON.parse(savedAnswers) || {};
 
@@ -14,7 +65,7 @@ window.onload = () => {
 
   function createExerciseCard(exercise) {
     const card = document.createElement("div");
-    card.className = "exercise-card";
+    card.className = "exercise-card dimmed";
 
     const cardHTML = `
       <div class="exercise-card-header full-width">
@@ -77,7 +128,14 @@ window.onload = () => {
           button.textContent = "Rest Timer";
           isTimerRunning = false;
           timeLeft = 180;
-          button.classList.remove("paused"); // just in case
+          button.classList.remove("paused");
+
+          // ✅ Push notification
+          if (Notification.permission === "granted") {
+            new Notification("Rest Over!", {
+              body: `Time to move on to your next workout: ${exercise.name}`,
+            });
+          }
         } else {
           timeLeft--;
           updateTimer();
@@ -92,7 +150,7 @@ window.onload = () => {
   const container = document.getElementById("main-body");
   selected.slice(0, NUM_EXERCISE_CARDS).forEach((exercise) => {
     const card = createExerciseCard(exercise);
-    container.insertBefore(card, document.querySelector(".ok-finish"));
+    container.insertBefore(card, document.getElementById("finish-button"));
   });
 
   // Handle active card highlighting
@@ -102,6 +160,21 @@ window.onload = () => {
     card.addEventListener("pointerdown", () => {
       cards.forEach((c) => c.classList.remove("active-card"));
       card.classList.add("active-card");
+    });
+  });
+
+  // Enable Finish button after first interaction with any card
+  const finishButton = document.getElementById("finish-button");
+  finishButton.classList.add("disabled"); // Start disabled
+
+  let finishEnabled = false;
+
+  cards.forEach((card) => {
+    card.addEventListener("pointerdown", () => {
+      if (!finishEnabled) {
+        finishButton.classList.remove("disabled");
+        finishEnabled = true;
+      }
     });
   });
 };

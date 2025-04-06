@@ -7,7 +7,7 @@ const questions = [
   },
   {
     question: "What is your experience level?",
-    options: ["Beginner", "Novice", "Intermediate", "Advanced", "Elite"],
+    options: ["Beginner", "Intermediate", "Advanced"],
     showOkButton: false,
   },
   {
@@ -61,10 +61,11 @@ function loadQuestion() {
   const questionElement = document.getElementById("question");
   const optionsElement = document.getElementById("question-options");
   const okButtonElement = document.getElementById("ok-button");
+  const backButtonElement = document.getElementById("back-button");
 
   const currentQuestion = questions[currentQuestionIndex];
 
-  // Load the question text into the h2 element
+  // Load the question text
   questionElement.innerText = currentQuestion.question;
 
   // Clear any previous options
@@ -76,20 +77,25 @@ function loadQuestion() {
     optionButton.innerText = option;
     optionButton.classList.add("option-button");
 
-    // Pass the optionButton itself, not just the option text
     optionButton.addEventListener("click", () =>
       handleOptionClick(optionButton)
     );
-
     optionsElement.appendChild(optionButton);
   });
 
-  // Display the "Ok" button if needed
+  // Handle the "Ok" button visibility
   if (currentQuestion.showOkButton) {
-    okButtonElement.style.display = "block"; // Show the Ok button
+    okButtonElement.style.display = "block";
     okButtonElement.addEventListener("click", handleOkClick);
   } else {
-    okButtonElement.style.display = "none"; // Hide the Ok button
+    okButtonElement.style.display = "none";
+  }
+
+  // Disable or hide the Back button on the first question
+  if (currentQuestionIndex === 0) {
+    backButtonElement.style.display = "none"; // Hide the Back button
+  } else {
+    backButtonElement.style.display = "block"; // Show the Back button
   }
 }
 
@@ -164,9 +170,32 @@ function moveToNextQuestion() {
   saveState();
 }
 
+// Function to move to the previous question
+function moveToPreviousQuestion() {
+  // Check if we are on the first question
+  if (currentQuestionIndex === 0) {
+    console.log("Back button is disabled on the first question.");
+    return; // Prevent further execution
+  }
+
+  // Decrement the question index
+  currentQuestionIndex--;
+
+  // Load the previous question
+  loadQuestion();
+
+  // Save the state after moving to the previous question
+  saveState();
+}
+
 // Call loadState function to load saved data, then load the first question
 window.onload = () => {
   localStorage.clear();
   loadState();
   loadQuestion();
+  // Attach event listener to the Back button
+  const backButtonElement = document.getElementById("back-button");
+  if (backButtonElement) {
+    backButtonElement.addEventListener("click", moveToPreviousQuestion);
+  }
 };

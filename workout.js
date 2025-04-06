@@ -98,7 +98,7 @@ window.onload = () => {
 
     // Timer logic for this card's button
     const button = card.querySelector(".rest-button");
-    let timeLeft = 180; // 3 minutes in seconds
+    let timeLeft = 120; // 3 minutes in seconds
     let timerInterval = null;
     let isTimerRunning = false;
 
@@ -127,7 +127,7 @@ window.onload = () => {
           clearInterval(timerInterval);
           button.textContent = "Rest Timer";
           isTimerRunning = false;
-          timeLeft = 180;
+          timeLeft = 120;
           button.classList.remove("paused");
 
           // ✅ Push notification

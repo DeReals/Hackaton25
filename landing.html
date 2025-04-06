@@ -3,8 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Workout Landing</title>
+    <title>HoundFit</title>
     <link rel="stylesheet" href="landing.css" />
+    <link rel="icon" type="image/x-icon" href="/images/iconImage.jpg" />
+
     <style>
       .floating-dumbbell svg {
         transition: transform 0.05s linear;
@@ -13,13 +15,13 @@
   </head>
   <body>
     <div class="landing-container">
-      <h1 class="landing-title">Your Perfect Workout</h1>
+      <h1 class="landing-title">HoundFit Workout</h1>
       <hr class="title-divider" />
       <p class="landing-subtitle">
         Tailored exercises. Smart training. Real results.
       </p>
       <div class="button-container">
-        <div style="height: 1rem;"></div>
+        <div style="height: 1rem"></div>
         <button class="option-button start-button" onclick="startWorkout()">
           I Want to Start Now
         </button>
@@ -30,14 +32,14 @@
       // Settings
       const dumbbellCount = 23;
       const dumbbellSize = 48;
-      const collisionBuffer = 3;       // Extra collision buffer (pixels)
-      const velocityDamping = 0.85;      // Damping factor on collisions
-      const speedBoost = 0.1;            // Additional speed boost on bounce
-      const rectShrink = 5;              // Shrink the landing container's rectangle for collision
-      const stuckSpeedThreshold = 0.2;   // Speed below which a dumbbell is considered "stuck"
-      const stuckTimeLimit = 3;          // Seconds to trigger explosion impulse for stuck dumbbells
-      const explosionImpulse = 3;        // Impulse magnitude for dispersion
-      const explosionRadius = 150;       // Radius for click explosion effect
+      const collisionBuffer = 3; // Extra collision buffer (pixels)
+      const velocityDamping = 0.85; // Damping factor on collisions
+      const speedBoost = 0.1; // Additional speed boost on bounce
+      const rectShrink = 5; // Shrink the landing container's rectangle for collision
+      const stuckSpeedThreshold = 0.2; // Speed below which a dumbbell is considered "stuck"
+      const stuckTimeLimit = 3; // Seconds to trigger explosion impulse for stuck dumbbells
+      const explosionImpulse = 3; // Impulse magnitude for dispersion
+      const explosionRadius = 150; // Radius for click explosion effect
       const dumbbells = [];
 
       // Utility: Return a random number between min and max.
@@ -59,7 +61,7 @@
           left: container.left + rectShrink,
           top: container.top + rectShrink,
           right: container.right - rectShrink,
-          bottom: container.bottom - rectShrink
+          bottom: container.bottom - rectShrink,
         };
       }
 
@@ -68,7 +70,9 @@
         const rect = getTextRect();
         const cx = x + dumbbellSize / 2;
         const cy = y + dumbbellSize / 2;
-        return (cx > rect.left && cx < rect.right && cy > rect.top && cy < rect.bottom);
+        return (
+          cx > rect.left && cx < rect.right && cy > rect.top && cy < rect.bottom
+        );
       }
 
       // Check collision between a circle (center cx, cy with radius r) and a rectangle.
@@ -85,7 +89,7 @@
         const dot = vx * nx + vy * ny;
         return {
           vx: (vx - 2 * dot * nx) * velocityDamping,
-          vy: (vy - 2 * dot * ny) * velocityDamping
+          vy: (vy - 2 * dot * ny) * velocityDamping,
         };
       }
 
@@ -117,8 +121,8 @@
             vy: Math.sin(angle) * speed,
             angle: 0,
             rotationSpeed: randomBetween(0.9, 1.4), // Random rotation speed between 0.9 and 1.4.
-            baseSpeed: speed,  // Store base speed for decay.
-            stuckTime: 0       // Timer to track if the dumbbell is nearly stationary.
+            baseSpeed: speed, // Store base speed for decay.
+            stuckTime: 0, // Timer to track if the dumbbell is nearly stationary.
           });
         }
       }
@@ -126,7 +130,7 @@
       // Update positions and handle collisions with boundaries and the landing container.
       function updatePositions(dt) {
         const rect = getTextRect();
-        dumbbells.forEach(db => {
+        dumbbells.forEach((db) => {
           // Update position based on velocity.
           db.x += db.vx * dt;
           db.y += db.vy * dt;
@@ -229,10 +233,10 @@
                 db2.vy *= velocityDamping;
               }
               const overlap = minDist - dist;
-              db1.x -= nx * overlap / 2;
-              db1.y -= ny * overlap / 2;
-              db2.x += nx * overlap / 2;
-              db2.y += ny * overlap / 2;
+              db1.x -= (nx * overlap) / 2;
+              db1.y -= (ny * overlap) / 2;
+              db2.x += (nx * overlap) / 2;
+              db2.y += (ny * overlap) / 2;
             }
           }
         }
@@ -240,7 +244,7 @@
 
       // Update the DOM: set position and rotation for each dumbbell.
       function updateDOM() {
-        dumbbells.forEach(db => {
+        dumbbells.forEach((db) => {
           db.angle += db.rotationSpeed;
           db.el.querySelector("svg").style.transform = `rotate(${db.angle}deg)`;
           db.el.style.transform = `translate(${db.x}px, ${db.y}px)`;
@@ -259,10 +263,10 @@
       }
 
       // Click explosion: on click, any dumbbell within explosionRadius receives an impulse away from the click.
-      document.addEventListener("click", function(e) {
+      document.addEventListener("click", function (e) {
         const clickX = e.clientX;
         const clickY = e.clientY;
-        dumbbells.forEach(db => {
+        dumbbells.forEach((db) => {
           const cx = db.x + dumbbellSize / 2;
           const cy = db.y + dumbbellSize / 2;
           const dx = cx - clickX;

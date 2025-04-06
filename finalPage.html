@@ -205,5 +205,55 @@
         </button>
       </div>
     </div>
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+
+    <script>
+      // Initialize EmailJS with your User ID (Public Key)
+      emailjs.init("gRM4tPDyr-qFanaFT"); // Replace this with your actual User ID
+
+      function sendEmail() {
+        var userEmail = document.getElementById("email").value;
+        console.log(userEmail);
+
+        // Check if the email field is not empty
+        if (userEmail) {
+          const templateParams = {
+            name: "Aidan", // Ensure this matches the template placeholder
+            title: "Beast", // Ensure this matches the template placeholder
+            email: userEmail, // Ensure this matches the template placeholder
+          };
+
+          // Send the email using EmailJS
+          emailjs
+            .send("service_nm5iuoq", "template_g6k5ann", templateParams)
+            .then(
+              function (response) {
+                alert("Email sent successfully!");
+              },
+              function (error) {
+                alert(
+                  "Failed to send email. Please try again. Error: " +
+                    JSON.stringify(error)
+                );
+              }
+            );
+        } else {
+          alert("Please enter a valid email address.");
+        }
+      }
+
+      // Add an event listener to the email input to submit on 'Enter' key press
+      document
+        .getElementById("email")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            sendEmail(); // Call the sendEmail function when Enter is pressed
+          }
+        });
+    </script>
   </body>
 </html>

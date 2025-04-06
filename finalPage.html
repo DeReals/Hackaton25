@@ -112,23 +112,66 @@
         left: 95%;
         animation-delay: 2.7s;
       }
+
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .button-flow {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        animation: fadeIn 2s ease-in-out;
+      }
+
+      .reset {
+        background-color: green;
+        width: 130%;
+        padding: 1rem;
+        font-size: 1.2rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        color: white;
+        border: 1px solid #333;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin: 1rem 0 0 0;
+      }
+
+      .reset:hover {
+        box-shadow: 0 4px 10px rgba(0, 128, 0, 1);
+        background-color: rgb(0, 150, 0);
+      }
     </style>
   </head>
   <body>
-    <div class="congrats-message">
-      🎉 <span>Workout Complete!</span> 🎉<br />
-      You're unstoppable!
+    <div class="main-container">
+      <div class="congrats-message">
+        🎉 <span>Workout Complete!</span> 🎉<br />
+        You're unstoppable!
+      </div>
+
+      <!-- Confetti elements -->
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="button-flow">
+        <button class="reset" onclick="window.location.href='index.html'">
+          Create New Workout
+        </button>
+      </div>
     </div>
-    <!-- Confetti elements -->
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
   </body>
+  <footer></footer>
 </html>

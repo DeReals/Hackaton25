@@ -53,15 +53,14 @@ input {
   min-width: 750px;
   max-width: 1000px;
   border-radius: 1rem;
+  transition: all 0.5s ease;
 
   /* Moderate 3D effect */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6),
-    /* Subtle shadow below for depth */ 0 4px 6px rgba(255, 255, 255, 0.2); /* Light top highlight for a slight lifted effect */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), 0 4px 6px rgba(255, 255, 255, 0.2);
 }
 
 .exercise-card.active-card {
-  box-shadow: 0 10px 24px rgba(255, 255, 255, 0.5),
-    0 6px 12px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
   transition: box-shadow 0.3s ease;
 }
 
@@ -102,18 +101,19 @@ input {
   background-color: rgb(40, 40, 40);
   color: white;
   font-size: 1rem;
-  height: 2.5rem; /* Set a fixed height */
+  height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .rest-button:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 10px rgb(184, 181, 181); /* Add shadow effect */
-  background-color: rgb(70, 70, 70); /* Darker background on hover */
+  box-shadow: 0 4px 10px rgb(184, 181, 181);
+  background-color: rgb(70, 70, 70);
 }
 
 .exercise-timer {
@@ -156,30 +156,31 @@ input {
 }
 
 .ok-finish {
-  background-color: green;
-  width: 10%;
-  padding: 1rem;
+  background-color: rgb(20, 20, 20);
+  color: white;
+  border: 0px solid #555;
+  margin: 1rem 0 2rem 0;
+  padding: 1rem 2rem;
   font-size: 1.2rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  color: white;
-  border: 1px solid #333;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin: 1rem 0 2rem 0;
+  transition: all 0.3s ease;
 }
 
 .ok-finish:hover {
-  box-shadow: 0 4px 10px rgba(0, 128, 0, 1);
-  background-color: rgb(0, 150, 0);
+  background-color: rgb(30, 30, 30);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.6); /* ✅ green glow to match */
 }
-/* ADDED: Style for paused flashing timer button */
+
+/* Paused state for rest timer button */
 .rest-button.paused {
   background-color: white;
   color: black;
   animation: flash 1s infinite;
 }
 
-/* ADDED: Keyframes for flash animation */
+/* Flashing animation */
 @keyframes flash {
   0%,
   100% {
@@ -188,4 +189,37 @@ input {
   50% {
     opacity: 0.4;
   }
+}
+
+/* Dimmed style for inactive cards */
+.exercise-card.dimmed {
+  filter: brightness(0.4) contrast(0.8);
+  opacity: 0.6;
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+.start-button {
+  background-color: rgb(20, 20, 20);
+  color: white;
+  border: 0px solid #555;
+  margin-bottom: 1rem;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: rgb(30, 30, 30);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.6); /* ✅ green glow added */
+}
+
+/* Disabled style for the finish button */
+.ok-finish.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
 }

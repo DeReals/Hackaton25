@@ -174,8 +174,8 @@
   </head>
   <body>
     <div class="main-container">
-      <div class="congrats-message">
-        🎉 <span>Workout Complete!</span> 🎉<br />
+      <div class="congrats-message" id="congrats-message">
+        🎉 <span id="congrats-name"></span> 🎉<br />
         You're unstoppable!
       </div>
 
@@ -213,6 +213,21 @@
     ></script>
 
     <script>
+      window.onload = function () {
+        // Retrieve userAnswers from localStorage
+        const userAnswers = JSON.parse(localStorage.getItem("userAnswers"));
+
+        if (userAnswers) {
+          const userName = userAnswers["What is your name?"];
+          // Set the user's name in the congrats message
+          document.getElementById(
+            "congrats-name"
+          ).textContent = `Congrats, ${userName}!`;
+        } else {
+          console.log("No user answers found in localStorage.");
+        }
+      };
+
       // Initialize EmailJS with your User ID (Public Key)
       emailjs.init("gRM4tPDyr-qFanaFT"); // Replace this with your actual User ID
 

@@ -5,12 +5,6 @@ const questions = [
     showOkButton: false,
   },
   {
-    question: "What is your gender?",
-    options: ["Male", "Female", "Other"],
-    type: "multiple-choice",
-    showOkButton: false,
-  },
-  {
     question: "What is your fitness experience level?",
     options: ["Beginner", "Intermediate", "Advanced"],
     type: "multiple-choice",

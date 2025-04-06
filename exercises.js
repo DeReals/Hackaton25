@@ -70,7 +70,7 @@ function selectExercises(muscleGroups, numExercises) {
       { name: "Seated Rows", reps: 10, sets: 3, weight: 20 },
     ],
     Shoulders: [
-      { name: "Overhead Press", reps: 8, sets: 4 },
+      { name: "Overhead Press", reps: 8, sets: 4, weight: 45 },
       { name: "Lateral Raises", reps: 12, sets: 3 },
       { name: "Front Raises", reps: 12, sets: 3 },
       { name: "Rear Delt Flys", reps: 12, sets: 3 },

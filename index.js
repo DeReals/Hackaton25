@@ -16,7 +16,7 @@ const questions = [
     showOkButton: true,
   },
   {
-    question: "What is your experience level?",
+    question: "What is your fitness experience level?",
     options: ["Beginner", "Intermediate", "Advanced"],
     type: "multiple-choice",
     showOkButton: false,

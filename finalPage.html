@@ -225,6 +225,7 @@
         }
 
         const summaryData = JSON.parse(localStorage.getItem("workoutSummary"));
+        const userAnswers = JSON.parse(localStorage.getItem("userAnswers"));
 
         if (!summaryData) {
           alert("Workout summary not found.");
@@ -247,7 +248,7 @@
         });
 
         const templateParams = {
-          name: "Athlete", // or personalize with user input if desired
+          name: userAnswers ? userAnswers["What is your name?"] : "Athlete",
           email: userEmail,
           date: today,
           summary: workoutText,

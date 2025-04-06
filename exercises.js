@@ -1,7 +1,7 @@
 function restTime(userAnswers) {
   time = 0;
 
-  switch (userAnswers["What is your experience level?"]) {
+  switch (userAnswers["What is your fitness experience level?"]) {
     case "Beginner":
       time = 4;
       break;
@@ -19,7 +19,7 @@ function restTime(userAnswers) {
 function numberOfExercises(userAnswers) {
   num = 0;
 
-  switch (userAnswers["What is your experience level?"]) {
+  switch (userAnswers["What is your fitness experience level?"]) {
     case "Beginner":
       num = 3;
       break;
@@ -51,25 +51,25 @@ function numberOfExercises(userAnswers) {
 function selectExercises(muscleGroups, numExercises, level) {
   const exercises = {
     Chest: [
-      { name: "Push-ups", reps: 10, sets: 3 },
-      { name: "Bench Press", reps: 8, sets: 4 },
-      { name: "Incline Dumbbell Press", reps: 10, sets: 3 },
-      { name: "Chest Flys", reps: 12, sets: 3 },
-      { name: "Dips", reps: 10, sets: 3 },
-      { name: "Chest Press Machine", reps: 10, sets: 3 },
-      { name: "Cable Crossovers", reps: 12, sets: 3 },
+      { name: "Push-ups", reps: 10, sets: 3, weight: "Bodyweight" },
+      { name: "Bench Press", reps: 8, sets: 4, weight: 45 },
+      { name: "Incline Dumbbell Press", reps: 10, sets: 3, weight: 5 },
+      { name: "Chest Flys", reps: 12, sets: 3, weight: 10 },
+      { name: "Dips", reps: 10, sets: 3, weight: "Bodyweight" },
+      { name: "Chest Press Machine", reps: 10, sets: 3, weight: 20 },
+      { name: "Cable Crossovers", reps: 12, sets: 3, weight: 10 },
     ],
     Back: [
-      { name: "Deadlifts", reps: 5, sets: 5 },
-      { name: "Pull-ups", reps: 10, sets: 3 },
-      { name: "Bent-over Rows", reps: 8, sets: 4 },
-      { name: "Lat Pulldown", reps: 10, sets: 3 },
-      { name: "T-Bar Rows", reps: 8, sets: 2 },
-      { name: "Face Pulls", reps: 12, sets: 3 },
-      { name: "Seated Rows", reps: 10, sets: 3 },
+      { name: "Deadlifts", reps: 5, sets: 5, weight: 45 },
+      { name: "Pull-ups", reps: 10, sets: 3, weight: "Bodyweight" },
+      { name: "Bent-over Rows", reps: 8, sets: 4, weight: 45 },
+      { name: "Lat Pulldown", reps: 10, sets: 3, weight: 10 },
+      { name: "T-Bar Rows", reps: 8, sets: 2, weight: 25 },
+      { name: "Face Pulls", reps: 12, sets: 3, weight: 10 },
+      { name: "Seated Rows", reps: 10, sets: 3, weight: 20 },
     ],
     Shoulders: [
-      { name: "Overhead Press", reps: 8, sets: 4 },
+      { name: "Overhead Press", reps: 8, sets: 4, weight: 45 },
       { name: "Lateral Raises", reps: 12, sets: 5 },
       { name: "Front Raises", reps: 12, sets: 3 },
       { name: "Rear Delt Flys", reps: 12, sets: 3 },

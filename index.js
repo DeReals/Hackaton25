@@ -6,12 +6,7 @@ const questions = [
     showOkButton: false,
   },
   {
-    question: "What is your age?",
-    type: "text",
-    showOkButton: true,
-  },
-  {
-    question: "What is your weight (in lbs)?",
+    question: "What is your name?",
     type: "text",
     showOkButton: true,
   },
@@ -98,15 +93,9 @@ function loadQuestion() {
     });
   } else if (currentQuestion.type === "text") {
     const input = document.createElement("input");
-    input.type = "number"; // or "text" if needed
+    input.type = "text";
     input.classList.add("text-input");
     input.id = "text-input";
-
-    // Add min and max for the age question
-    if (currentQuestion.question === "What is your age?") {
-      input.min = 13;
-      input.max = 100;
-    }
 
     // Pre-fill saved value if it exists
     const savedValue = userAnswers[currentQuestion.question];
@@ -170,19 +159,14 @@ function handleOkClick() {
       return;
     }
 
-    if (currentQuestion.question === "What is your age?") {
-      const age = parseInt(value);
-      if (isNaN(age) || age < 13 || age > 100) {
-        errorMessageElement.innerText = "Age must be between 13 and 100.";
-        errorMessageElement.style.display = "block";
-        return;
-      }
-      userAnswers[currentQuestion.question] = age;
-    } else {
-      userAnswers[currentQuestion.question] = value;
-    }
+    // Save the value
     userAnswers[currentQuestion.question] = value;
-  } else if (currentQuestion.showOkButton) {
+  }
+
+  if (
+    currentQuestion.type === "multiple-choice" &&
+    currentQuestion.showOkButton
+  ) {
     const selectedOptions = [];
     const selectedButtons = document.querySelectorAll(
       ".option-button.selected"

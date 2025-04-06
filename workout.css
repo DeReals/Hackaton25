@@ -87,7 +87,7 @@ input {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  gap: 0.5rem; /* adds space between button and timer */
+  gap: 0.5rem;
 }
 
 .rest-button {
@@ -101,6 +101,12 @@ input {
   justify-content: center;
   border-radius: 0.5rem;
   cursor: pointer;
+}
+
+.rest-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgb(184, 181, 181); /* Add shadow effect */
+  background-color: rgb(70, 70, 70); /* Darker background on hover */
 }
 
 .exercise-timer {

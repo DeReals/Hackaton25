@@ -11,6 +11,11 @@ const questions = [
     showOkButton: false,
   },
   {
+    question: "What do you want to train?",
+    options: ["Push", "Pull", "Legs", "Create Your Workout"],
+    showOkButton: false,
+  },
+  {
     question: "What muscle groups do you want to focus on?",
     options: [
       "Chest",

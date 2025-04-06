@@ -67,6 +67,32 @@
         font-size: 1rem;
         color: #bbbbbb; /* Subtle gray for fallback messages */
       }
+      .button-flow {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 2s ease-in-out;
+      }
+      .reset,
+      .back-home {
+        background-color: green;
+        height: 60px; /* Set a fixed height for both buttons */
+        width: 200px; /* Set a fixed width to maintain consistency */
+        padding: 1rem;
+        font-size: 1.2rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        color: white;
+        border: 1px solid #333;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin: 1rem 10px; /* Add margin between the buttons */
+      }
+
+      .reset:hover,
+      .back-home:hover {
+        box-shadow: 0 4px 10px rgba(0, 128, 0, 1);
+        background-color: rgb(0, 150, 0);
+      }
     </style>
   </head>
   <body>
@@ -74,7 +100,14 @@
     <div class="card-container" id="card-container">
       <!-- Cards will be populated dynamically -->
     </div>
-
+    <div class="button-flow">
+      <button class="reset" onclick="window.location.href='index.html'">
+        New Workout
+      </button>
+      <button class="back-home" onclick="window.location.href='landing.html'">
+        Home
+      </button>
+    </div>
     <script>
       // Fetch data from local storage
       const storedData = localStorage.getItem("exerciseCardData");

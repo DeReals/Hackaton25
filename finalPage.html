@@ -123,14 +123,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 20px;
         animation: fadeIn 2s ease-in-out;
+      }
+
+      #email {
+        margin-top: 10px;
       }
 
       .reset,
       .back-home {
         background-color: green;
-        width: 130%;
+        height: 60px; /* Set a fixed height for both buttons */
+        width: 200px; /* Set a fixed width to maintain consistency */
         padding: 1rem;
         font-size: 1.2rem;
         border-radius: 0.5rem;
@@ -138,7 +142,7 @@
         color: white;
         border: 1px solid #333;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        margin: 1rem 0 0 0;
+        margin: 1rem 10px; /* Add margin between the buttons */
       }
 
       .reset:hover,
@@ -148,7 +152,7 @@
       }
 
       .email-container {
-        margin-top: 20px;
+        margin: 20px 0;
         text-align: center;
       }
 
@@ -188,7 +192,7 @@
 
       <!-- Email Input -->
       <div class="email-container">
-        <label for="email">Enter your email:</label><br />
+        <label for="email">Enter your email for a Workout Summary:</label><br />
         <input type="email" id="email" placeholder="example@email.com" />
       </div>
 

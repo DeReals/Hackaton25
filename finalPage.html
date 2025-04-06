@@ -219,7 +219,34 @@
       function sendEmail() {
         const userEmail = document.getElementById("email").value;
 
+<<<<<<< Updated upstream
         if (!userEmail) {
+=======
+        // Check if the email field is not empty
+        if (userEmail) {
+          const templateParams = {
+            name: "Aidan", // Ensure this matches the template placeholder
+            title: "Beast", // Ensure this matches the template placeholder
+            email: userEmail, // Ensure this matches the template placeholder
+          };
+
+          // Send the email using EmailJS
+          emailjs
+            .send("service_nm5iuoq", "template_g6k5ann", templateParams)
+            .then(
+              function (response) {
+                //alert("Email sent successfully!");
+                window.location.href = "emailConf.html";
+              },
+              function (error) {
+                alert(
+                  "Failed to send email. Please try again. Error: " +
+                    JSON.stringify(error)
+                );
+              }
+            );
+        } else {
+>>>>>>> Stashed changes
           alert("Please enter a valid email address.");
           return;
         }

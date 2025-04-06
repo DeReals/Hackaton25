@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Sent</title>
+    <style>
+      body {
+        background-color: rgb(40, 40, 40);
+        font-family: calibri;
+        color: white;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center; /* Centers horizontally */
+        align-items: center; /* Centers vertically */
+      }
+      .container {
+        animation: fade-in 1.2s ease-out;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+        padding: 30px;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+      .success-icon {
+        font-size: 70px;
+        margin-bottom: 20px;
+        animation: pulse 2s infinite;
+      }
+      .message {
+        font-size: 30px;
+        margin: 10px;
+        font-weight: bold;
+      }
+      .home-link {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 25px;
+        background-color: green;
+        color: white;
+        text-decoration: none;
+        border-radius: 30px;
+        font-size: 20px;
+        font-weight: bold;
+        transition: transform 0.3s ease, background-color 0.4s ease;
+      }
+      .home-link:hover {
+        background-color: #007700;
+        transform: scale(1.05);
+      }
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="success-icon">🌿</div>
+      <p class="message">
+        Success! Your email has been sent with a dash of freshness!
+      </p>
+      <a href="/landing.html" class="home-link">Back to Home</a>
+    </div>
+  </body>
+</html>

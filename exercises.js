@@ -48,8 +48,7 @@ function numberOfExercises(userAnswers) {
   return num;
 }
 
-function selectExercises(muscleGroups, numExercises) {
-  // Define a list of exercises for each muscle group
+function selectExercises(muscleGroups, numExercises, level) {
   const exercises = {
     Chest: [
       { name: "Push-ups", reps: 10, sets: 3, weight: "Bodyweight" },
@@ -92,7 +91,7 @@ function selectExercises(muscleGroups, numExercises) {
       { name: "Leg Curls", reps: 12, sets: 4 },
       { name: "Good Mornings", reps: 10, sets: 3 },
       { name: "Glute-Ham Raises", reps: 10, sets: 3 },
-      { name: "Kettlebell Swings", reps: 15, sets: 3 },
+      { name: "Kettlebell Swings", reps: 12, sets: 3 },
       { name: "Cable Kickbacks", reps: 12, sets: 3 },
       { name: "Single-Leg Deadlifts", reps: 10, sets: 3 },
     ],
@@ -123,16 +122,16 @@ function selectExercises(muscleGroups, numExercises) {
       { name: "Cable Kickbacks", reps: 12, sets: 3 },
     ],
     Forearms: [
-      { name: "Wrist Curls", reps: 15, sets: 3 },
-      { name: "Reverse Wrist Curls", reps: 15, sets: 3 },
-      { name: "Farmer's Carries", reps: 30, sets: 3 },
+      { name: "Wrist Curls", reps: 12, sets: 3 },
+      { name: "Reverse Wrist Curls", reps: 12, sets: 3 },
+      { name: "Farmer's Carries", reps: 12, sets: 3 },
       { name: "Hammer Curls", reps: 12, sets: 3 },
       { name: "Reverse Curls", reps: 12, sets: 3 },
       { name: "Dead Hangs", reps: 30, sets: 4 },
     ],
     Abs: [
       { name: "Crunches", reps: 20, sets: 3 },
-      { name: "Plank", reps: "60 seconds", sets: 3 }, // seconds
+      { name: "Plank", reps: "60 seconds", sets: 3 },
       { name: "Russian Twists", reps: 30, sets: 3 },
       { name: "Leg Raises", reps: 15, sets: 3 },
       { name: "Bicycle Crunches", reps: 30, sets: 3 },
@@ -141,19 +140,16 @@ function selectExercises(muscleGroups, numExercises) {
     ],
   };
 
-  // Determine how many exercises to allocate to each muscle group
   const numGroups = muscleGroups.length;
-  const exercisesPerGroup = Math.floor(numExercises / numGroups); // base number of exercises per group
-  let remainder = numExercises % numGroups; // remaining exercises to distribute
+  const exercisesPerGroup = Math.floor(numExercises / numGroups);
+  let remainder = numExercises % numGroups;
 
   let selectedExercises = [];
 
   muscleGroups.forEach((group) => {
-    // Get available exercises for the current group
     const availableExercises = exercises[group] || [];
-
-    // Shuffle the exercises for randomness
     let shuffledExercises = [...availableExercises];
+
     for (let i = shuffledExercises.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffledExercises[i], shuffledExercises[j]] = [
@@ -162,13 +158,19 @@ function selectExercises(muscleGroups, numExercises) {
       ];
     }
 
-    // If there are more exercises to allocate (remainder), give this group one extra exercise
     const numToSelect = exercisesPerGroup + (remainder > 0 ? 1 : 0);
-    selectedExercises = selectedExercises.concat(
-      shuffledExercises.slice(0, numToSelect)
-    );
+    const selected = shuffledExercises.slice(0, numToSelect);
 
-    // If there are leftovers, decrement the remainder counter
+    if (level === "Beginner") {
+      selected.forEach((exercise) => {
+        if (typeof exercise.reps === "number") {
+          exercise.reps = Math.max(1, exercise.reps - 2);
+        }
+      });
+    }
+
+    selectedExercises = selectedExercises.concat(selected);
+
     if (remainder > 0) {
       remainder--;
     }

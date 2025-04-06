@@ -143,13 +143,17 @@ function handleOptionClick(optionButton) {
 
 function handleOkClick() {
   const currentQuestion = questions[currentQuestionIndex];
+  const errorMessageElement = document.getElementById("error-message");
+  errorMessageElement.style.display = "none";
+  errorMessageElement.innerText = "";
 
   if (currentQuestion.type === "text") {
     const input = document.getElementById("text-input");
     const value = input.value.trim();
 
     if (!value) {
-      alert("Please enter a value.");
+      errorMessageElement.innerText = "Please enter a valid input.";
+      errorMessageElement.style.display = "block";
       return;
     }
 
@@ -164,7 +168,8 @@ function handleOkClick() {
     });
 
     if (selectedOptions.length === 0) {
-      alert("Please select at least one option.");
+      errorMessageElement.innerText = "Please select at least one option.";
+      errorMessageElement.style.display = "block";
       return;
     }
 
@@ -239,13 +244,17 @@ function moveToNextQuestion() {
   saveState();
 }
 
-// Function to move to the previous question
 function moveToPreviousQuestion() {
   // Check if we are on the first question
   if (currentQuestionIndex === 0) {
     console.log("Back button is disabled on the first question.");
     return; // Prevent further execution
   }
+
+  // Hide any error messages
+  const errorMessageElement = document.getElementById("error-message");
+  errorMessageElement.style.display = "none";
+  errorMessageElement.innerText = "";
 
   // Decrement the question index
   currentQuestionIndex--;

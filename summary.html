@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercise Data</title>
+    <style>
+      /* General Styles */
+      body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #121212; /* Dark background */
+        color: #f0f0f0; /* Light text color */
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        margin: 20px 0;
+        color: #4caf50; /* Green accent color */
+      }
+
+      .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* Card Styles */
+      .card {
+        border: 1px solid #3e3e3e;
+        border-radius: 12px;
+        padding: 20px;
+        background: #1e1e1e; /* Slightly lighter dark card background */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        width: 280px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+      }
+
+      .card h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #4caf50; /* Green accent for card titles */
+        text-align: center;
+      }
+
+      .set {
+        font-size: 1rem;
+        margin: 8px 0;
+        color: #c8e6c9; /* Soft green for set details */
+        background-color: #2a2a2a; /* Slightly lighter background for sets */
+        padding: 8px;
+        border-radius: 6px;
+      }
+
+      /* Message Styles */
+      p {
+        text-align: center;
+        font-size: 1rem;
+        color: #bbbbbb; /* Subtle gray for fallback messages */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Saved Exercise Data</h1>
+    <div class="card-container" id="card-container">
+      <!-- Cards will be populated dynamically -->
+    </div>
+
+    <script>
+      // Fetch data from local storage
+      const storedData = localStorage.getItem("exerciseCardData");
+      const cardData = storedData ? JSON.parse(storedData) : [];
+
+      const cardContainer = document.getElementById("card-container");
+
+      if (cardData.length === 0) {
+        cardContainer.innerHTML = "<p>No exercise data available.</p>";
+      } else {
+        cardData.forEach((card, index) => {
+          const cardElement = document.createElement("div");
+          cardElement.className = "card";
+
+          const cardHTML = `
+          <h2>Exercise ${index + 1}: ${card.name}</h2>
+          ${card.sets
+            .map(
+              (set, setIndex) =>
+                `<div class="set">Set ${setIndex + 1}: Reps - ${
+                  set.reps
+                }, Weight - ${set.weight}</div>`
+            )
+            .join("")}
+        `;
+
+          cardElement.innerHTML = cardHTML;
+          cardContainer.appendChild(cardElement);
+        });
+      }
+    </script>
+  </body>
+</html>

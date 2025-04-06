@@ -13,14 +13,56 @@
         START
       </button>
 
-      <!-- THIS BUTTON STAYS BELOW THE CARDS -->
-      <button
-        id="finish-button"
-        class="ok-finish"
-        onclick="window.location.href='finalPage.html'"
-      >
+      <!--This button saves the result to the local storage-->
+      <button id="finish-button" class="ok-finish" onclick="saveCardInputs()">
         FINISH
       </button>
+      <script>
+        function saveCardInputs() {
+          window.location.href = "finalPage.html";
+          //window.location.href = "summary.html";
+          const cards = document.querySelectorAll(".exercise-card"); // Select all exercise cards
+          const cardData = []; // Array to store card details
+
+          cards.forEach((card) => {
+            const exerciseName =
+              card.querySelector(".exercise-name h2").textContent;
+
+            const splits = card.querySelectorAll(
+              ".exercise-card-individual-split"
+            );
+            const setsData = [];
+
+            splits.forEach((split) => {
+              const repsInput =
+                split.querySelector("input:nth-child(1)").value ||
+                "Not provided";
+              const weightInput =
+                split.querySelector("input:nth-child(2)").value ||
+                "Not provided";
+              setsData.push({ reps: repsInput, weight: weightInput });
+            });
+
+            cardData.push({
+              name: exerciseName,
+              sets: setsData,
+            });
+          });
+
+          // Save card data into local storage
+          localStorage.setItem("exerciseCardData", JSON.stringify(cardData));
+          console.log("Data saved to local storage:", cardData); // Optional: Log data for debugging
+        }
+
+        // Example usage:
+        window.onload = () => {
+          document
+            .getElementById("finish-button")
+            .addEventListener("click", () => {
+              saveCardInputs(); // Save user inputs when the Finish button is clicked
+            });
+        };
+      </script>
     </div>
     <script src="workout.js"></script>
     <script src="exercises.js"></script>

@@ -59,6 +59,12 @@ input {
     /* Subtle shadow below for depth */ 0 4px 6px rgba(255, 255, 255, 0.2); /* Light top highlight for a slight lifted effect */
 }
 
+.exercise-card.active-card {
+  box-shadow: 0 10px 24px rgba(255, 255, 255, 0.5),
+    0 6px 12px rgba(255, 255, 255, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
 .exercise-card:first-child {
   margin-top: 20px;
 }

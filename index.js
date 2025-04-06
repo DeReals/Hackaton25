@@ -102,6 +102,12 @@ function loadQuestion() {
     input.classList.add("text-input");
     input.id = "text-input";
 
+    // Add min and max for the age question
+    if (currentQuestion.question === "What is your age?") {
+      input.min = 13;
+      input.max = 100;
+    }
+
     // Pre-fill saved value if it exists
     const savedValue = userAnswers[currentQuestion.question];
     if (savedValue) input.value = savedValue;
@@ -164,6 +170,17 @@ function handleOkClick() {
       return;
     }
 
+    if (currentQuestion.question === "What is your age?") {
+      const age = parseInt(value);
+      if (isNaN(age) || age < 13 || age > 100) {
+        errorMessageElement.innerText = "Age must be between 13 and 100.";
+        errorMessageElement.style.display = "block";
+        return;
+      }
+      userAnswers[currentQuestion.question] = age;
+    } else {
+      userAnswers[currentQuestion.question] = value;
+    }
     userAnswers[currentQuestion.question] = value;
   } else if (currentQuestion.showOkButton) {
     const selectedOptions = [];
